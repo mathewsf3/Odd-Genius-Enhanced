@@ -1,0 +1,17 @@
+{"level":"warn","message":"Redis not available, using memory cache service","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:14.869Z"}
+{"level":"info","message":"Initializing cache service...","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:14.980Z"}
+{"level":"info","message":"Cache service initialized successfully","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:14.984Z"}
+{"level":"info","message":"🚀 Match Analysis Backend Server started successfully!","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.010Z"}
+{"level":"info","message":"📍 Server running at: http://localhost:3001","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.011Z"}
+{"level":"info","message":"🌍 Environment: development","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.011Z"}
+{"level":"info","message":"📊 FootyStats API: Ready","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.012Z"}
+{"level":"info","message":"💾 Cache: Memory","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.013Z"}
+{"level":"info","message":"📝 Logging: Level info","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.013Z"}
+{"level":"info","message":"📚 Available endpoints:","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.014Z"}
+{"level":"info","message":"   GET  /health - Health check","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.015Z"}
+{"level":"info","message":"   GET  /api - API documentation","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.015Z"}
+{"level":"info","message":"   POST /api/matches/analyze - Comprehensive match analysis","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.015Z"}
+{"level":"info","message":"   GET  /api/matches/team/:id/form - Team form analysis","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.016Z"}
+{"level":"info","message":"   GET  /api/matches/head-to-head - Head-to-head analysis","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.016Z"}
+{"level":"info","message":"   POST /api/matches/predictions - Match predictions","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.017Z"}
+{"level":"info","message":"   GET  /api/matches/overview - Quick match overview","service":"match-analysis-backend","timestamp":"2025-06-10T18:04:15.017Z"}

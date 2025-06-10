@@ -3,13 +3,14 @@
 **Document**: Backend Implementation Architecture  
 **Version**: 1.0  
 **Date**: June 10, 2025  
-**Status**: Ready for Implementation  
+**Status**: Ready for Implementation
 
 ---
 
 ## 🏗️ BACKEND ARCHITECTURE BLUEPRINT
 
 ### **Directory Structure:**
+
 ```
 backend/
 ├── src/
@@ -63,149 +64,160 @@ backend/
 
 ```javascript
 // src/services/comprehensiveAnalytics.js
-const TeamFormService = require('./teamFormService');
-const StatisticsCalculator = require('./statisticsCalculator');
-const FootyStatsApi = require('./footyStatsApiService');
+const TeamFormService = require("./teamFormService");
+const StatisticsCalculator = require("./statisticsCalculator");
+const FootyStatsApi = require("./footyStatsApiService");
 
 class ComprehensiveAnalytics {
-    constructor() {
-        this.teamFormService = new TeamFormService();
-        this.statsCalculator = new StatisticsCalculator();
-        this.apiService = new FootyStatsApi();
+  constructor() {
+    this.teamFormService = new TeamFormService();
+    this.statsCalculator = new StatisticsCalculator();
+    this.apiService = new FootyStatsApi();
+  }
+
+  /**
+   * Main method: Get complete match analytics
+   * @param {number} matchId - Target match ID
+   * @returns {Object} Complete analytics data
+   */
+  async getMatchAnalytics(matchId) {
+    try {
+      console.log(`🔬 Starting comprehensive analysis for match ${matchId}`);
+
+      // Step 1: Get match details
+      const matchData = await this.getMatchDetails(matchId);
+
+      // Step 2: Find working season for teams
+      const workingSeasonId = await this.findWorkingSeasonForTeams(
+        matchData.homeId,
+        matchData.awayId
+      );
+
+      // Step 3: Extract team form data
+      const formData = await this.extractTeamFormData(
+        matchData.homeId,
+        matchData.awayId,
+        workingSeasonId
+      );
+
+      // Step 4: Calculate all analytics
+      const analytics = await this.calculateAllAnalytics(
+        matchData,
+        formData,
+        workingSeasonId
+      );
+
+      return {
+        success: true,
+        matchId,
+        timestamp: new Date().toISOString(),
+        data: analytics,
+      };
+    } catch (error) {
+      console.error(`❌ Analytics failed for match ${matchId}:`, error);
+      throw new Error(`Analytics generation failed: ${error.message}`);
+    }
+  }
+
+  async getMatchDetails(matchId) {
+    const result = await this.apiService.getMatch(matchId);
+
+    if (!result.success) {
+      throw new Error(`Failed to get match details: ${result.error}`);
     }
 
-    /**
-     * Main method: Get complete match analytics
-     * @param {number} matchId - Target match ID
-     * @returns {Object} Complete analytics data
-     */
-    async getMatchAnalytics(matchId) {
-        try {
-            console.log(`🔬 Starting comprehensive analysis for match ${matchId}`);
-            
-            // Step 1: Get match details
-            const matchData = await this.getMatchDetails(matchId);
-            
-            // Step 2: Find working season for teams
-            const workingSeasonId = await this.findWorkingSeasonForTeams(
-                matchData.homeId, 
-                matchData.awayId
-            );
-            
-            // Step 3: Extract team form data
-            const formData = await this.extractTeamFormData(
-                matchData.homeId,
-                matchData.awayId,
-                workingSeasonId
-            );
-            
-            // Step 4: Calculate all analytics
-            const analytics = await this.calculateAllAnalytics(
-                matchData,
-                formData,
-                workingSeasonId
-            );
-            
-            return {
-                success: true,
-                matchId,
-                timestamp: new Date().toISOString(),
-                data: analytics
-            };
-            
-        } catch (error) {
-            console.error(`❌ Analytics failed for match ${matchId}:`, error);
-            throw new Error(`Analytics generation failed: ${error.message}`);
-        }
+    return this.parseMatchData(result.data);
+  }
+
+  async findWorkingSeasonForTeams(homeTeamId, awayTeamId) {
+    // Use proven multi-season search strategy
+    const candidateSeasons = [
+      10117,
+      10118,
+      10119,
+      10120, // International seasons
+      1625,
+      1626,
+      1627,
+      1628,
+      1629,
+      1630, // League seasons
+      2024,
+      2025,
+      2026, // Recent years
+    ];
+
+    for (const seasonId of candidateSeasons) {
+      const hasData = await this.teamFormService.checkSeasonHasTeamData(
+        seasonId,
+        [homeTeamId, awayTeamId]
+      );
+
+      if (hasData) {
+        console.log(`✅ Found working season: ${seasonId}`);
+        return seasonId;
+      }
     }
 
-    async getMatchDetails(matchId) {
-        const result = await this.apiService.getMatch(matchId);
-        
-        if (!result.success) {
-            throw new Error(`Failed to get match details: ${result.error}`);
-        }
-        
-        return this.parseMatchData(result.data);
-    }
+    throw new Error("No working season found for teams");
+  }
 
-    async findWorkingSeasonForTeams(homeTeamId, awayTeamId) {
-        // Use proven multi-season search strategy
-        const candidateSeasons = [
-            10117, 10118, 10119, 10120,          // International seasons
-            1625, 1626, 1627, 1628, 1629, 1630,  // League seasons
-            2024, 2025, 2026                     // Recent years
-        ];
-        
-        for (const seasonId of candidateSeasons) {
-            const hasData = await this.teamFormService.checkSeasonHasTeamData(
-                seasonId, 
-                [homeTeamId, awayTeamId]
-            );
-            
-            if (hasData) {
-                console.log(`✅ Found working season: ${seasonId}`);
-                return seasonId;
-            }
-        }
-        
-        throw new Error('No working season found for teams');
-    }
+  async extractTeamFormData(homeTeamId, awayTeamId, seasonId) {
+    const [homeFormData, awayFormData] = await Promise.all([
+      this.teamFormService.getTeamForm(homeTeamId, "HOME", seasonId),
+      this.teamFormService.getTeamForm(awayTeamId, "AWAY", seasonId),
+    ]);
 
-    async extractTeamFormData(homeTeamId, awayTeamId, seasonId) {
-        const [homeFormData, awayFormData] = await Promise.all([
-            this.teamFormService.getTeamForm(homeTeamId, 'HOME', seasonId),
-            this.teamFormService.getTeamForm(awayTeamId, 'AWAY', seasonId)
-        ]);
-        
-        return {
-            home: homeFormData,
-            away: awayFormData
-        };
-    }
+    return {
+      home: homeFormData,
+      away: awayFormData,
+    };
+  }
 
-    async calculateAllAnalytics(matchData, formData, seasonId) {
-        const analytics = {};
-        
-        // 1. Goals Analysis
-        analytics.goals = {
-            home: this.statsCalculator.calculateGoalsOverUnder(formData.home.last5),
-            away: this.statsCalculator.calculateGoalsOverUnder(formData.away.last5),
-            combined: this.statsCalculator.calculateCombinedGoalsStats(formData)
-        };
-        
-        // 2. Cards Analysis
-        analytics.cards = {
-            home: this.statsCalculator.calculateCardsOverUnder(formData.home.last5),
-            away: this.statsCalculator.calculateCardsOverUnder(formData.away.last5)
-        };
-        
-        // 3. Corners Analysis
-        analytics.corners = {
-            home: this.statsCalculator.calculateCornersOverUnder(formData.home.last5),
-            away: this.statsCalculator.calculateCornersOverUnder(formData.away.last5)
-        };
-        
-        // 4. Expected Statistics
-        analytics.xStats = {
-            expectedGoals: this.statsCalculator.calculateExpectedGoals(formData),
-            expectedCorners: this.statsCalculator.calculateExpectedCorners(formData),
-            expectedCards: this.statsCalculator.calculateExpectedCards(formData)
-        };
-        
-        // 5. Additional context (parallel execution)
-        const [h2hData, leagueContext, refereeData] = await Promise.allSettled([
-            this.getH2HAnalysis(matchData.homeId, matchData.awayId, seasonId),
-            this.getLeagueContext(seasonId),
-            this.getRefereeAnalysis(matchData.refereeId)
-        ]);
-        
-        analytics.h2h = h2hData.status === 'fulfilled' ? h2hData.value : {};
-        analytics.league = leagueContext.status === 'fulfilled' ? leagueContext.value : {};
-        analytics.referee = refereeData.status === 'fulfilled' ? refereeData.value : {};
-        
-        return analytics;
-    }
+  async calculateAllAnalytics(matchData, formData, seasonId) {
+    const analytics = {};
+
+    // 1. Goals Analysis
+    analytics.goals = {
+      home: this.statsCalculator.calculateGoalsOverUnder(formData.home.last5),
+      away: this.statsCalculator.calculateGoalsOverUnder(formData.away.last5),
+      combined: this.statsCalculator.calculateCombinedGoalsStats(formData),
+    };
+
+    // 2. Cards Analysis
+    analytics.cards = {
+      home: this.statsCalculator.calculateCardsOverUnder(formData.home.last5),
+      away: this.statsCalculator.calculateCardsOverUnder(formData.away.last5),
+    };
+
+    // 3. Corners Analysis
+    analytics.corners = {
+      home: this.statsCalculator.calculateCornersOverUnder(formData.home.last5),
+      away: this.statsCalculator.calculateCornersOverUnder(formData.away.last5),
+    };
+
+    // 4. Expected Statistics
+    analytics.xStats = {
+      expectedGoals: this.statsCalculator.calculateExpectedGoals(formData),
+      expectedCorners: this.statsCalculator.calculateExpectedCorners(formData),
+      expectedCards: this.statsCalculator.calculateExpectedCards(formData),
+    };
+
+    // 5. Additional context (parallel execution)
+    const [h2hData, leagueContext, refereeData] = await Promise.allSettled([
+      this.getH2HAnalysis(matchData.homeId, matchData.awayId, seasonId),
+      this.getLeagueContext(seasonId),
+      this.getRefereeAnalysis(matchData.refereeId),
+    ]);
+
+    analytics.h2h = h2hData.status === "fulfilled" ? h2hData.value : {};
+    analytics.league =
+      leagueContext.status === "fulfilled" ? leagueContext.value : {};
+    analytics.referee =
+      refereeData.status === "fulfilled" ? refereeData.value : {};
+
+    return analytics;
+  }
 }
 
 module.exports = ComprehensiveAnalytics;
@@ -215,107 +227,110 @@ module.exports = ComprehensiveAnalytics;
 
 ```javascript
 // src/services/teamFormService.js
-const FootyStatsApi = require('./footyStatsApiService');
-const DataParser = require('../utils/dataParser');
+const FootyStatsApi = require("./footyStatsApiService");
+const DataParser = require("../utils/dataParser");
 
 class TeamFormService {
-    constructor() {
-        this.apiService = new FootyStatsApi();
-        this.dataParser = new DataParser();
+  constructor() {
+    this.apiService = new FootyStatsApi();
+    this.dataParser = new DataParser();
+  }
+
+  /**
+   * Get team form data (last 5 and last 10 matches)
+   * @param {number} teamId - Team ID
+   * @param {string} venueType - 'HOME' or 'AWAY'
+   * @param {number} seasonId - Season ID
+   * @returns {Object} Team form data
+   */
+  async getTeamForm(teamId, venueType, seasonId) {
+    try {
+      // Get all matches for the season
+      const allMatches = await this.getSeasonMatches(seasonId);
+
+      // Filter matches for specific team and venue
+      const teamMatches = this.filterTeamMatches(allMatches, teamId, venueType);
+
+      // Sort by date (most recent first)
+      const sortedMatches = this.sortMatchesByDate(teamMatches);
+
+      return {
+        teamId,
+        venueType,
+        seasonId,
+        last5: sortedMatches.slice(0, 5),
+        last10: sortedMatches.slice(0, 10),
+        totalFound: sortedMatches.length,
+      };
+    } catch (error) {
+      console.error(
+        `❌ Failed to get ${venueType} form for team ${teamId}:`,
+        error
+      );
+      return {
+        teamId,
+        venueType,
+        seasonId,
+        last5: [],
+        last10: [],
+        totalFound: 0,
+        error: error.message,
+      };
+    }
+  }
+
+  async getSeasonMatches(seasonId, maxMatches = 1000) {
+    const result = await this.apiService.getLeagueMatches(seasonId, {
+      max_per_page: maxMatches,
+    });
+
+    if (!result.success) {
+      throw new Error(`Failed to get season matches: ${result.error}`);
     }
 
-    /**
-     * Get team form data (last 5 and last 10 matches)
-     * @param {number} teamId - Team ID
-     * @param {string} venueType - 'HOME' or 'AWAY'
-     * @param {number} seasonId - Season ID
-     * @returns {Object} Team form data
-     */
-    async getTeamForm(teamId, venueType, seasonId) {
-        try {
-            // Get all matches for the season
-            const allMatches = await this.getSeasonMatches(seasonId);
-            
-            // Filter matches for specific team and venue
-            const teamMatches = this.filterTeamMatches(allMatches, teamId, venueType);
-            
-            // Sort by date (most recent first)
-            const sortedMatches = this.sortMatchesByDate(teamMatches);
-            
-            return {
-                teamId,
-                venueType,
-                seasonId,
-                last5: sortedMatches.slice(0, 5),
-                last10: sortedMatches.slice(0, 10),
-                totalFound: sortedMatches.length
-            };
-            
-        } catch (error) {
-            console.error(`❌ Failed to get ${venueType} form for team ${teamId}:`, error);
-            return {
-                teamId,
-                venueType,
-                seasonId,
-                last5: [],
-                last10: [],
-                totalFound: 0,
-                error: error.message
-            };
+    return Array.isArray(result.data) ? result.data : [result.data];
+  }
+
+  filterTeamMatches(matches, teamId, venueType) {
+    return matches
+      .filter((match) => {
+        const parsed = this.dataParser.parseMatch(match);
+
+        if (venueType === "HOME") {
+          return parsed.homeId === teamId;
+        } else if (venueType === "AWAY") {
+          return parsed.awayId === teamId;
         }
-    }
 
-    async getSeasonMatches(seasonId, maxMatches = 1000) {
-        const result = await this.apiService.getLeagueMatches(seasonId, {
-            max_per_page: maxMatches
+        return false;
+      })
+      .map((match) => this.dataParser.parseMatch(match));
+  }
+
+  sortMatchesByDate(matches) {
+    return matches.sort((a, b) => {
+      const dateA = new Date(a.date * 1000); // Unix timestamp
+      const dateB = new Date(b.date * 1000);
+      return dateB - dateA; // Most recent first
+    });
+  }
+
+  async checkSeasonHasTeamData(seasonId, teamIds) {
+    try {
+      const matches = await this.getSeasonMatches(seasonId, 100); // Quick check
+
+      const hasTeamData = teamIds.some((teamId) => {
+        return matches.some((match) => {
+          const parsed = this.dataParser.parseMatch(match);
+          return parsed.homeId === teamId || parsed.awayId === teamId;
         });
-        
-        if (!result.success) {
-            throw new Error(`Failed to get season matches: ${result.error}`);
-        }
-        
-        return Array.isArray(result.data) ? result.data : [result.data];
-    }
+      });
 
-    filterTeamMatches(matches, teamId, venueType) {
-        return matches.filter(match => {
-            const parsed = this.dataParser.parseMatch(match);
-            
-            if (venueType === 'HOME') {
-                return parsed.homeId === teamId;
-            } else if (venueType === 'AWAY') {
-                return parsed.awayId === teamId;
-            }
-            
-            return false;
-        }).map(match => this.dataParser.parseMatch(match));
+      return hasTeamData;
+    } catch (error) {
+      return false;
     }
-
-    sortMatchesByDate(matches) {
-        return matches.sort((a, b) => {
-            const dateA = new Date(a.date * 1000); // Unix timestamp
-            const dateB = new Date(b.date * 1000);
-            return dateB - dateA; // Most recent first
-        });
-    }
-
-    async checkSeasonHasTeamData(seasonId, teamIds) {
-        try {
-            const matches = await this.getSeasonMatches(seasonId, 100); // Quick check
-            
-            const hasTeamData = teamIds.some(teamId => {
-                return matches.some(match => {
-                    const parsed = this.dataParser.parseMatch(match);
-                    return parsed.homeId === teamId || parsed.awayId === teamId;
-                });
-            });
-            
-            return hasTeamData;
-            
-        } catch (error) {
-            return false;
-        }
-    }
+  }
 }
 
 module.exports = TeamFormService;
@@ -326,243 +341,245 @@ module.exports = TeamFormService;
 ```javascript
 // src/services/statisticsCalculator.js
 class StatisticsCalculator {
-    constructor() {
-        this.goalsThresholds = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
-        this.cardsThresholds = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
-        this.cornersThresholds = [6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5];
+  constructor() {
+    this.goalsThresholds = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+    this.cardsThresholds = [0.5, 1.5, 2.5, 3.5, 4.5, 5.5];
+    this.cornersThresholds = [6.5, 7.5, 8.5, 9.5, 10.5, 11.5, 12.5, 13.5];
+  }
+
+  /**
+   * Calculate goals over/under statistics
+   * @param {Array} matches - Array of match objects
+   * @returns {Object} Goals O/U statistics
+   */
+  calculateGoalsOverUnder(matches) {
+    if (!matches || matches.length === 0) {
+      return this.getEmptyStats(this.goalsThresholds);
     }
 
-    /**
-     * Calculate goals over/under statistics
-     * @param {Array} matches - Array of match objects
-     * @returns {Object} Goals O/U statistics
-     */
-    calculateGoalsOverUnder(matches) {
-        if (!matches || matches.length === 0) {
-            return this.getEmptyStats(this.goalsThresholds);
-        }
+    const stats = {};
 
-        const stats = {};
-        
-        this.goalsThresholds.forEach(threshold => {
-            const overCount = matches.filter(match => {
-                const totalGoals = (match.homeGoals || 0) + (match.awayGoals || 0);
-                return totalGoals > threshold;
-            }).length;
-            
-            const underCount = matches.length - overCount;
-            
-            stats[`over_${threshold}`] = {
-                count: overCount,
-                percentage: this.calculatePercentage(overCount, matches.length),
-                matches: matches.length
-            };
-            
-            stats[`under_${threshold}`] = {
-                count: underCount,
-                percentage: this.calculatePercentage(underCount, matches.length),
-                matches: matches.length
-            };
-        });
-        
-        // Add summary statistics
-        stats.summary = {
-            totalMatches: matches.length,
-            averageGoals: this.calculateAverageGoals(matches),
-            highestScoringMatch: this.findHighestScoringMatch(matches),
-            cleanSheets: this.countCleanSheets(matches)
-        };
-        
-        return stats;
+    this.goalsThresholds.forEach((threshold) => {
+      const overCount = matches.filter((match) => {
+        const totalGoals = (match.homeGoals || 0) + (match.awayGoals || 0);
+        return totalGoals > threshold;
+      }).length;
+
+      const underCount = matches.length - overCount;
+
+      stats[`over_${threshold}`] = {
+        count: overCount,
+        percentage: this.calculatePercentage(overCount, matches.length),
+        matches: matches.length,
+      };
+
+      stats[`under_${threshold}`] = {
+        count: underCount,
+        percentage: this.calculatePercentage(underCount, matches.length),
+        matches: matches.length,
+      };
+    });
+
+    // Add summary statistics
+    stats.summary = {
+      totalMatches: matches.length,
+      averageGoals: this.calculateAverageGoals(matches),
+      highestScoringMatch: this.findHighestScoringMatch(matches),
+      cleanSheets: this.countCleanSheets(matches),
+    };
+
+    return stats;
+  }
+
+  /**
+   * Calculate cards over/under statistics
+   * @param {Array} matches - Array of match objects
+   * @returns {Object} Cards O/U statistics
+   */
+  calculateCardsOverUnder(matches) {
+    if (!matches || matches.length === 0) {
+      return this.getEmptyStats(this.cardsThresholds);
     }
 
-    /**
-     * Calculate cards over/under statistics
-     * @param {Array} matches - Array of match objects
-     * @returns {Object} Cards O/U statistics
-     */
-    calculateCardsOverUnder(matches) {
-        if (!matches || matches.length === 0) {
-            return this.getEmptyStats(this.cardsThresholds);
-        }
+    const stats = {};
 
-        const stats = {};
-        
-        this.cardsThresholds.forEach(threshold => {
-            const overCount = matches.filter(match => {
-                const totalCards = this.calculateTotalCards(match);
-                return totalCards > threshold;
-            }).length;
-            
-            const underCount = matches.length - overCount;
-            
-            stats[`over_${threshold}`] = {
-                count: overCount,
-                percentage: this.calculatePercentage(overCount, matches.length),
-                matches: matches.length
-            };
-            
-            stats[`under_${threshold}`] = {
-                count: underCount,
-                percentage: this.calculatePercentage(underCount, matches.length),
-                matches: matches.length
-            };
-        });
-        
-        // Add summary statistics
-        stats.summary = {
-            totalMatches: matches.length,
-            averageCards: this.calculateAverageCards(matches),
-            averageYellowCards: this.calculateAverageYellowCards(matches),
-            averageRedCards: this.calculateAverageRedCards(matches)
-        };
-        
-        return stats;
+    this.cardsThresholds.forEach((threshold) => {
+      const overCount = matches.filter((match) => {
+        const totalCards = this.calculateTotalCards(match);
+        return totalCards > threshold;
+      }).length;
+
+      const underCount = matches.length - overCount;
+
+      stats[`over_${threshold}`] = {
+        count: overCount,
+        percentage: this.calculatePercentage(overCount, matches.length),
+        matches: matches.length,
+      };
+
+      stats[`under_${threshold}`] = {
+        count: underCount,
+        percentage: this.calculatePercentage(underCount, matches.length),
+        matches: matches.length,
+      };
+    });
+
+    // Add summary statistics
+    stats.summary = {
+      totalMatches: matches.length,
+      averageCards: this.calculateAverageCards(matches),
+      averageYellowCards: this.calculateAverageYellowCards(matches),
+      averageRedCards: this.calculateAverageRedCards(matches),
+    };
+
+    return stats;
+  }
+
+  /**
+   * Calculate corners over/under statistics
+   * @param {Array} matches - Array of match objects
+   * @returns {Object} Corners O/U statistics
+   */
+  calculateCornersOverUnder(matches) {
+    if (!matches || matches.length === 0) {
+      return this.getEmptyStats(this.cornersThresholds);
     }
 
-    /**
-     * Calculate corners over/under statistics
-     * @param {Array} matches - Array of match objects
-     * @returns {Object} Corners O/U statistics
-     */
-    calculateCornersOverUnder(matches) {
-        if (!matches || matches.length === 0) {
-            return this.getEmptyStats(this.cornersThresholds);
-        }
+    const stats = {};
 
-        const stats = {};
-        
-        this.cornersThresholds.forEach(threshold => {
-            const overCount = matches.filter(match => {
-                const totalCorners = this.calculateTotalCorners(match);
-                return totalCorners > threshold;
-            }).length;
-            
-            const underCount = matches.length - overCount;
-            
-            stats[`over_${threshold}`] = {
-                count: overCount,
-                percentage: this.calculatePercentage(overCount, matches.length),
-                matches: matches.length
-            };
-            
-            stats[`under_${threshold}`] = {
-                count: underCount,
-                percentage: this.calculatePercentage(underCount, matches.length),
-                matches: matches.length
-            };
-        });
-        
-        // Add summary statistics
-        stats.summary = {
-            totalMatches: matches.length,
-            averageCorners: this.calculateAverageCorners(matches),
-            highestCornerMatch: this.findHighestCornerMatch(matches)
-        };
-        
-        return stats;
-    }
+    this.cornersThresholds.forEach((threshold) => {
+      const overCount = matches.filter((match) => {
+        const totalCorners = this.calculateTotalCorners(match);
+        return totalCorners > threshold;
+      }).length;
 
-    /**
-     * Calculate expected statistics
-     * @param {Object} formData - Team form data
-     * @returns {Object} Expected statistics
-     */
-    calculateExpectedGoals(formData) {
-        const homeAvg = this.calculateAverageGoals(formData.home.last5);
-        const awayAvg = this.calculateAverageGoals(formData.away.last5);
-        
-        return {
-            home: parseFloat(homeAvg.toFixed(2)),
-            away: parseFloat(awayAvg.toFixed(2)),
-            combined: parseFloat((homeAvg + awayAvg).toFixed(2)),
-            confidence: this.calculateConfidenceLevel(formData)
-        };
-    }
+      const underCount = matches.length - overCount;
 
-    calculateExpectedCorners(formData) {
-        const homeAvg = this.calculateAverageCorners(formData.home.last5);
-        const awayAvg = this.calculateAverageCorners(formData.away.last5);
-        
-        return {
-            home: parseFloat(homeAvg.toFixed(1)),
-            away: parseFloat(awayAvg.toFixed(1)),
-            combined: parseFloat((homeAvg + awayAvg).toFixed(1))
-        };
-    }
+      stats[`over_${threshold}`] = {
+        count: overCount,
+        percentage: this.calculatePercentage(overCount, matches.length),
+        matches: matches.length,
+      };
 
-    calculateExpectedCards(formData) {
-        const homeAvg = this.calculateAverageCards(formData.home.last5);
-        const awayAvg = this.calculateAverageCards(formData.away.last5);
-        
-        return {
-            home: parseFloat(homeAvg.toFixed(1)),
-            away: parseFloat(awayAvg.toFixed(1)),
-            combined: parseFloat((homeAvg + awayAvg).toFixed(1))
-        };
-    }
+      stats[`under_${threshold}`] = {
+        count: underCount,
+        percentage: this.calculatePercentage(underCount, matches.length),
+        matches: matches.length,
+      };
+    });
 
-    // Helper methods
-    calculateTotalCards(match) {
-        return (match.homeYellowCards || 0) + 
-               (match.awayYellowCards || 0) + 
-               (match.homeRedCards || 0) + 
-               (match.awayRedCards || 0);
-    }
+    // Add summary statistics
+    stats.summary = {
+      totalMatches: matches.length,
+      averageCorners: this.calculateAverageCorners(matches),
+      highestCornerMatch: this.findHighestCornerMatch(matches),
+    };
 
-    calculateTotalCorners(match) {
-        return (match.homeCorners || 0) + (match.awayCorners || 0);
-    }
+    return stats;
+  }
 
-    calculatePercentage(count, total) {
-        return total > 0 ? parseFloat((count / total * 100).toFixed(1)) : 0;
-    }
+  /**
+   * Calculate expected statistics
+   * @param {Object} formData - Team form data
+   * @returns {Object} Expected statistics
+   */
+  calculateExpectedGoals(formData) {
+    const homeAvg = this.calculateAverageGoals(formData.home.last5);
+    const awayAvg = this.calculateAverageGoals(formData.away.last5);
 
-    calculateAverageGoals(matches) {
-        if (!matches || matches.length === 0) return 0;
-        
-        const totalGoals = matches.reduce((sum, match) => {
-            return sum + (match.homeGoals || 0) + (match.awayGoals || 0);
-        }, 0);
-        
-        return totalGoals / matches.length;
-    }
+    return {
+      home: parseFloat(homeAvg.toFixed(2)),
+      away: parseFloat(awayAvg.toFixed(2)),
+      combined: parseFloat((homeAvg + awayAvg).toFixed(2)),
+      confidence: this.calculateConfidenceLevel(formData),
+    };
+  }
 
-    calculateAverageCards(matches) {
-        if (!matches || matches.length === 0) return 0;
-        
-        const totalCards = matches.reduce((sum, match) => {
-            return sum + this.calculateTotalCards(match);
-        }, 0);
-        
-        return totalCards / matches.length;
-    }
+  calculateExpectedCorners(formData) {
+    const homeAvg = this.calculateAverageCorners(formData.home.last5);
+    const awayAvg = this.calculateAverageCorners(formData.away.last5);
 
-    calculateAverageCorners(matches) {
-        if (!matches || matches.length === 0) return 0;
-        
-        const totalCorners = matches.reduce((sum, match) => {
-            return sum + this.calculateTotalCorners(match);
-        }, 0);
-        
-        return totalCorners / matches.length;
-    }
+    return {
+      home: parseFloat(homeAvg.toFixed(1)),
+      away: parseFloat(awayAvg.toFixed(1)),
+      combined: parseFloat((homeAvg + awayAvg).toFixed(1)),
+    };
+  }
 
-    getEmptyStats(thresholds) {
-        const stats = {};
-        
-        thresholds.forEach(threshold => {
-            stats[`over_${threshold}`] = { count: 0, percentage: 0, matches: 0 };
-            stats[`under_${threshold}`] = { count: 0, percentage: 0, matches: 0 };
-        });
-        
-        stats.summary = {
-            totalMatches: 0,
-            dataAvailable: false
-        };
-        
-        return stats;
-    }
+  calculateExpectedCards(formData) {
+    const homeAvg = this.calculateAverageCards(formData.home.last5);
+    const awayAvg = this.calculateAverageCards(formData.away.last5);
+
+    return {
+      home: parseFloat(homeAvg.toFixed(1)),
+      away: parseFloat(awayAvg.toFixed(1)),
+      combined: parseFloat((homeAvg + awayAvg).toFixed(1)),
+    };
+  }
+
+  // Helper methods
+  calculateTotalCards(match) {
+    return (
+      (match.homeYellowCards || 0) +
+      (match.awayYellowCards || 0) +
+      (match.homeRedCards || 0) +
+      (match.awayRedCards || 0)
+    );
+  }
+
+  calculateTotalCorners(match) {
+    return (match.homeCorners || 0) + (match.awayCorners || 0);
+  }
+
+  calculatePercentage(count, total) {
+    return total > 0 ? parseFloat(((count / total) * 100).toFixed(1)) : 0;
+  }
+
+  calculateAverageGoals(matches) {
+    if (!matches || matches.length === 0) return 0;
+
+    const totalGoals = matches.reduce((sum, match) => {
+      return sum + (match.homeGoals || 0) + (match.awayGoals || 0);
+    }, 0);
+
+    return totalGoals / matches.length;
+  }
+
+  calculateAverageCards(matches) {
+    if (!matches || matches.length === 0) return 0;
+
+    const totalCards = matches.reduce((sum, match) => {
+      return sum + this.calculateTotalCards(match);
+    }, 0);
+
+    return totalCards / matches.length;
+  }
+
+  calculateAverageCorners(matches) {
+    if (!matches || matches.length === 0) return 0;
+
+    const totalCorners = matches.reduce((sum, match) => {
+      return sum + this.calculateTotalCorners(match);
+    }, 0);
+
+    return totalCorners / matches.length;
+  }
+
+  getEmptyStats(thresholds) {
+    const stats = {};
+
+    thresholds.forEach((threshold) => {
+      stats[`over_${threshold}`] = { count: 0, percentage: 0, matches: 0 };
+      stats[`under_${threshold}`] = { count: 0, percentage: 0, matches: 0 };
+    });
+
+    stats.summary = {
+      totalMatches: 0,
+      dataAvailable: false,
+    };
+
+    return stats;
+  }
 }
 
 module.exports = StatisticsCalculator;
@@ -576,11 +593,11 @@ module.exports = StatisticsCalculator;
 
 ```javascript
 // src/routes/analytics.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const ComprehensiveAnalytics = require('../services/comprehensiveAnalytics');
-const cache = require('../middleware/cache');
-const rateLimit = require('../middleware/rateLimit');
+const ComprehensiveAnalytics = require("../services/comprehensiveAnalytics");
+const cache = require("../middleware/cache");
+const rateLimit = require("../middleware/rateLimit");
 
 const analytics = new ComprehensiveAnalytics();
 
@@ -588,129 +605,126 @@ const analytics = new ComprehensiveAnalytics();
  * GET /api/analytics/match/:matchId/comprehensive
  * Get complete match analytics
  */
-router.get('/match/:matchId/comprehensive', 
-    rateLimit.analytics,
-    cache.checkCache('analytics', 900), // 15 min cache
-    async (req, res, next) => {
-        try {
-            const { matchId } = req.params;
-            
-            const result = await analytics.getMatchAnalytics(parseInt(matchId));
-            
-            // Cache the result
-            cache.setCache(`analytics_${matchId}`, result, 900);
-            
-            res.json(result);
-            
-        } catch (error) {
-            next(error);
-        }
+router.get(
+  "/match/:matchId/comprehensive",
+  rateLimit.analytics,
+  cache.checkCache("analytics", 900), // 15 min cache
+  async (req, res, next) => {
+    try {
+      const { matchId } = req.params;
+
+      const result = await analytics.getMatchAnalytics(parseInt(matchId));
+
+      // Cache the result
+      cache.setCache(`analytics_${matchId}`, result, 900);
+
+      res.json(result);
+    } catch (error) {
+      next(error);
     }
+  }
 );
 
 /**
  * GET /api/analytics/match/:matchId/goals
  * Get goals analysis only
  */
-router.get('/match/:matchId/goals',
-    rateLimit.quick,
-    cache.checkCache('goals', 300), // 5 min cache
-    async (req, res, next) => {
-        try {
-            const { matchId } = req.params;
-            
-            const result = await analytics.getMatchAnalytics(parseInt(matchId));
-            
-            res.json({
-                success: true,
-                matchId,
-                data: {
-                    goals: result.data.goals,
-                    xStats: {
-                        expectedGoals: result.data.xStats.expectedGoals
-                    }
-                }
-            });
-            
-        } catch (error) {
-            next(error);
-        }
+router.get(
+  "/match/:matchId/goals",
+  rateLimit.quick,
+  cache.checkCache("goals", 300), // 5 min cache
+  async (req, res, next) => {
+    try {
+      const { matchId } = req.params;
+
+      const result = await analytics.getMatchAnalytics(parseInt(matchId));
+
+      res.json({
+        success: true,
+        matchId,
+        data: {
+          goals: result.data.goals,
+          xStats: {
+            expectedGoals: result.data.xStats.expectedGoals,
+          },
+        },
+      });
+    } catch (error) {
+      next(error);
     }
+  }
 );
 
 /**
  * GET /api/analytics/match/:matchId/cards
  * Get cards analysis only
  */
-router.get('/match/:matchId/cards', async (req, res, next) => {
-    try {
-        const { matchId } = req.params;
-        
-        const result = await analytics.getMatchAnalytics(parseInt(matchId));
-        
-        res.json({
-            success: true,
-            matchId,
-            data: {
-                cards: result.data.cards,
-                xStats: {
-                    expectedCards: result.data.xStats.expectedCards
-                }
-            }
-        });
-        
-    } catch (error) {
-        next(error);
-    }
+router.get("/match/:matchId/cards", async (req, res, next) => {
+  try {
+    const { matchId } = req.params;
+
+    const result = await analytics.getMatchAnalytics(parseInt(matchId));
+
+    res.json({
+      success: true,
+      matchId,
+      data: {
+        cards: result.data.cards,
+        xStats: {
+          expectedCards: result.data.xStats.expectedCards,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 /**
  * GET /api/analytics/match/:matchId/corners
  * Get corners analysis only
  */
-router.get('/match/:matchId/corners', async (req, res, next) => {
-    try {
-        const { matchId } = req.params;
-        
-        const result = await analytics.getMatchAnalytics(parseInt(matchId));
-        
-        res.json({
-            success: true,
-            matchId,
-            data: {
-                corners: result.data.corners,
-                xStats: {
-                    expectedCorners: result.data.xStats.expectedCorners
-                }
-            }
-        });
-        
-    } catch (error) {
-        next(error);
-    }
+router.get("/match/:matchId/corners", async (req, res, next) => {
+  try {
+    const { matchId } = req.params;
+
+    const result = await analytics.getMatchAnalytics(parseInt(matchId));
+
+    res.json({
+      success: true,
+      matchId,
+      data: {
+        corners: result.data.corners,
+        xStats: {
+          expectedCorners: result.data.xStats.expectedCorners,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 /**
  * GET /api/analytics/match/:matchId/h2h
  * Get head-to-head analysis
  */
-router.get('/match/:matchId/h2h', async (req, res, next) => {
-    try {
-        const { matchId } = req.params;
-        
-        const result = await analytics.getMatchAnalytics(parseInt(matchId));
-        
-        res.json({
-            success: true,
-            matchId,
-            data: {
-                h2h: result.data.h2h
-            }
-        });
-        
-    } catch (error) {
-        next(error);
-    }
+router.get("/match/:matchId/h2h", async (req, res, next) => {
+  try {
+    const { matchId } = req.params;
+
+    const result = await analytics.getMatchAnalytics(parseInt(matchId));
+
+    res.json({
+      success: true,
+      matchId,
+      data: {
+        h2h: result.data.h2h,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
@@ -768,20 +782,21 @@ export interface ThresholdStat {
 ```typescript
 // frontend/src/services/analyticsService.ts
 class AnalyticsService {
-  private baseUrl = '/api/analytics';
+  private baseUrl = "/api/analytics";
 
   async getComprehensiveAnalytics(matchId: number): Promise<MatchAnalytics> {
     try {
-      const response = await fetch(`${this.baseUrl}/match/${matchId}/comprehensive`);
-      
+      const response = await fetch(
+        `${this.baseUrl}/match/${matchId}/comprehensive`
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       return await response.json();
-      
     } catch (error) {
-      console.error('Failed to fetch comprehensive analytics:', error);
+      console.error("Failed to fetch comprehensive analytics:", error);
       throw error;
     }
   }
@@ -814,9 +829,9 @@ export default new AnalyticsService();
 
 ```typescript
 // frontend/src/hooks/useMatchAnalytics.ts
-import { useState, useEffect } from 'react';
-import analyticsService from '../services/analyticsService';
-import { MatchAnalytics } from '../types/analytics';
+import { useState, useEffect } from "react";
+import analyticsService from "../services/analyticsService";
+import { MatchAnalytics } from "../types/analytics";
 
 export function useMatchAnalytics(matchId: number) {
   const [analytics, setAnalytics] = useState<MatchAnalytics | null>(null);
@@ -834,7 +849,9 @@ export function useMatchAnalytics(matchId: number) {
         const data = await analyticsService.getComprehensiveAnalytics(matchId);
         setAnalytics(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load analytics');
+        setError(
+          err instanceof Error ? err.message : "Failed to load analytics"
+        );
       } finally {
         setLoading(false);
       }
@@ -892,7 +909,7 @@ RATE_LIMIT_MAX=100
 
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 services:
   backend:
     build: .
@@ -904,7 +921,7 @@ services:
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
-    
+
   nginx:
     image: nginx:alpine
     ports:
@@ -926,39 +943,39 @@ services:
 
 ```javascript
 // src/routes/health.js
-router.get('/health', (req, res) => {
+router.get("/health", (req, res) => {
   res.json({
-    status: 'healthy',
+    status: "healthy",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     memory: process.memoryUsage(),
-    version: process.env.npm_package_version
+    version: process.env.npm_package_version,
   });
 });
 
-router.get('/health/detailed', async (req, res) => {
+router.get("/health/detailed", async (req, res) => {
   try {
     // Test API connectivity
     const apiTest = await footyStatsApi.testConnection();
-    
+
     res.json({
-      status: 'healthy',
+      status: "healthy",
       timestamp: new Date().toISOString(),
       services: {
-        api: apiTest ? 'connected' : 'disconnected',
-        cache: 'operational',
-        analytics: 'operational'
+        api: apiTest ? "connected" : "disconnected",
+        cache: "operational",
+        analytics: "operational",
       },
       performance: {
         uptime: process.uptime(),
         memory: process.memoryUsage(),
-        cpu: process.cpuUsage()
-      }
+        cpu: process.cpuUsage(),
+      },
     });
   } catch (error) {
     res.status(503).json({
-      status: 'unhealthy',
-      error: error.message
+      status: "unhealthy",
+      error: error.message,
     });
   }
 });
@@ -969,6 +986,7 @@ router.get('/health/detailed', async (req, res) => {
 ## ✅ IMPLEMENTATION CHECKLIST
 
 ### **Phase 1: Core Backend (Week 1)**
+
 - [ ] Set up project structure
 - [ ] Implement ComprehensiveAnalytics service
 - [ ] Implement TeamFormService
@@ -978,6 +996,7 @@ router.get('/health/detailed', async (req, res) => {
 - [ ] Add error handling
 
 ### **Phase 2: Frontend Integration (Week 2)**
+
 - [ ] Create TypeScript interfaces
 - [ ] Implement frontend service
 - [ ] Create React hooks
@@ -986,6 +1005,7 @@ router.get('/health/detailed', async (req, res) => {
 - [ ] Add error handling
 
 ### **Phase 3: Testing & Optimization (Week 3)**
+
 - [ ] Unit tests for all services
 - [ ] Integration tests
 - [ ] Performance testing
@@ -993,6 +1013,7 @@ router.get('/health/detailed', async (req, res) => {
 - [ ] Error handling validation
 
 ### **Phase 4: Production Deployment (Week 4)**
+
 - [ ] Docker configuration
 - [ ] Environment setup
 - [ ] Monitoring implementation

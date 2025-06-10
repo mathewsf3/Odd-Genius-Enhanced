@@ -1,0 +1,131 @@
+{
+  "timestamp": "2025-06-10T17:25:51.135Z",
+  "testType": "robustness-validation",
+  "dataAvailabilityMap": {
+    "1625": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    },
+    "1626": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    },
+    "10117": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    },
+    "10118": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    },
+    "10119": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    },
+    "10120": {
+      "totalMatches": 0,
+      "uniqueTeams": 0,
+      "teamIds": [],
+      "sampleMatches": []
+    }
+  },
+  "robustnessTests": [
+    {
+      "testCase": {
+        "name": "Iran vs North Korea (CONHECIDA - CONTROLE)",
+        "homeId": 3072,
+        "awayId": 3095,
+        "homeTeam": "Iran",
+        "awayTeam": "North Korea",
+        "description": "Partida que sabemos que funciona"
+      },
+      "formDataFound": false,
+      "homeMatches": 0,
+      "awayMatches": 0,
+      "seasonsWithData": [],
+      "errors": [],
+      "success": false
+    },
+    {
+      "testCase": {
+        "name": "Teams com IDs próximos ao Iran",
+        "homeId": 3070,
+        "awayId": 3074,
+        "homeTeam": "Team A",
+        "awayTeam": "Team B",
+        "description": "Teste com IDs próximos"
+      },
+      "formDataFound": false,
+      "homeMatches": 0,
+      "awayMatches": 0,
+      "seasonsWithData": [],
+      "errors": [],
+      "success": false
+    },
+    {
+      "testCase": {
+        "name": "Teams com IDs diferentes",
+        "homeId": 3100,
+        "awayId": 3200,
+        "homeTeam": "Team C",
+        "awayTeam": "Team D",
+        "description": "Teste com IDs mais distantes"
+      },
+      "formDataFound": false,
+      "homeMatches": 0,
+      "awayMatches": 0,
+      "seasonsWithData": [],
+      "errors": [],
+      "success": false
+    },
+    {
+      "testCase": {
+        "name": "Teams com IDs muito baixos",
+        "homeId": 10,
+        "awayId": 20,
+        "homeTeam": "Team E",
+        "awayTeam": "Team F",
+        "description": "Teste com IDs baixos"
+      },
+      "formDataFound": false,
+      "homeMatches": 0,
+      "awayMatches": 0,
+      "seasonsWithData": [],
+      "errors": [],
+      "success": false
+    },
+    {
+      "testCase": {
+        "name": "Teams com IDs altos",
+        "homeId": 5000,
+        "awayId": 5100,
+        "homeTeam": "Team G",
+        "awayTeam": "Team H",
+        "description": "Teste com IDs altos"
+      },
+      "formDataFound": false,
+      "homeMatches": 0,
+      "awayMatches": 0,
+      "seasonsWithData": [],
+      "errors": [],
+      "success": false
+    }
+  ],
+  "summary": {
+    "totalTests": 5,
+    "successfulTests": 0,
+    "failedTests": 5,
+    "seasonsWithAnyData": [],
+    "teamsWithData": []
+  }
+}
