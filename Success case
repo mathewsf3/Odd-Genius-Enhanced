@@ -1,0 +1,5 @@
+console.log('Fetching leagues data...');
+console.log('Leagues data received:', [/* array of league objects */]);
+
+// Error case
+console.error('Error fetching leagues:', 'Network error');

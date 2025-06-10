@@ -1,0 +1,183 @@
+{
+  "allSports": {
+    "match": {
+      "event_key": 1499505,
+      "event_date": "2025-06-03",
+      "event_time": "18:00",
+      "event_home_team": "Oran U21",
+      "home_team_key": 11699,
+      "event_away_team": "USM Alger U21",
+      "away_team_key": 11230,
+      "event_halftime_result": "0 - 1",
+      "event_final_result": "1 - 3",
+      "event_ft_result": "1 - 3",
+      "event_penalty_result": "",
+      "event_status": "Finished",
+      "country_name": "Algeria",
+      "league_name": "Reserve League",
+      "league_key": 436,
+      "league_round": "Round 30",
+      "league_season": "2024/2025",
+      "event_live": "1",
+      "event_stadium": "",
+      "event_referee": "",
+      "home_team_logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg",
+      "away_team_logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg",
+      "event_country_key": 11,
+      "league_logo": null,
+      "country_logo": "https://apiv2.allsportsapi.com/logo/logo_country/11_algeria.png",
+      "event_home_formation": "",
+      "event_away_formation": "",
+      "fk_stage_key": 483,
+      "stage_name": "Current",
+      "league_group": null,
+      "goalscorers": [
+        {
+          "time": "45",
+          "home_scorer": "",
+          "home_scorer_id": "",
+          "home_assist": "",
+          "home_assist_id": "",
+          "score": "0 - 1",
+          "away_scorer": "",
+          "away_scorer_id": "",
+          "away_assist": "",
+          "away_assist_id": "",
+          "info": "away",
+          "info_time": "1st Half"
+        },
+        {
+          "time": "67",
+          "home_scorer": "",
+          "home_scorer_id": "",
+          "home_assist": "",
+          "home_assist_id": "",
+          "score": "0 - 2",
+          "away_scorer": "",
+          "away_scorer_id": "",
+          "away_assist": "",
+          "away_assist_id": "",
+          "info": "away",
+          "info_time": "2nd Half"
+        },
+        {
+          "time": "79",
+          "home_scorer": "",
+          "home_scorer_id": "",
+          "home_assist": "",
+          "home_assist_id": "",
+          "score": "1 - 2",
+          "away_scorer": "",
+          "away_scorer_id": "",
+          "away_assist": "",
+          "away_assist_id": "",
+          "info": "home",
+          "info_time": "2nd Half"
+        },
+        {
+          "time": "90+7",
+          "home_scorer": "",
+          "home_scorer_id": "",
+          "home_assist": "",
+          "home_assist_id": "",
+          "score": "1 - 3",
+          "away_scorer": "",
+          "away_scorer_id": "",
+          "away_assist": "",
+          "away_assist_id": "",
+          "info": "away",
+          "info_time": "2nd Half"
+        }
+      ],
+      "substitutes": [],
+      "cards": [],
+      "vars": {
+        "home_team": [],
+        "away_team": []
+      },
+      "lineups": {
+        "home_team": {
+          "starting_lineups": [],
+          "substitutes": [],
+          "coaches": [],
+          "missing_players": []
+        },
+        "away_team": {
+          "starting_lineups": [],
+          "substitutes": [],
+          "coaches": [],
+          "missing_players": []
+        }
+      },
+      "statistics": []
+    },
+    "homeTeamData": null,
+    "awayTeamData": null
+  },
+  "apiFootball": {
+    "homeTeamId": 24037,
+    "awayTeamId": 17716,
+    "homeTeamData": {
+      "totalFixtures": 12,
+      "fixturesWithStats": 0,
+      "recentFixtures": [
+        {
+          "opponent": "Sabugy U20",
+          "score": "2 - 0",
+          "date": "2024-06-13T22:00:00+00:00"
+        },
+        {
+          "opponent": "Sousa U20",
+          "score": "2 - 4",
+          "date": "2024-06-25T22:00:00+00:00"
+        },
+        {
+          "opponent": "Esporte de Patos U20",
+          "score": "5 - 0",
+          "date": "2024-07-06T20:00:00+00:00"
+        },
+        {
+          "opponent": "Nacional de Patos U20",
+          "score": "0 - 3",
+          "date": "2024-07-10T23:00:00+00:00"
+        },
+        {
+          "opponent": "Picuiense U20",
+          "score": "1 - 4",
+          "date": "2024-07-13T18:00:00+00:00"
+        }
+      ]
+    },
+    "awayTeamData": {
+      "totalFixtures": 33,
+      "fixturesWithStats": 0,
+      "recentFixtures": [
+        {
+          "opponent": "Stade Marocain",
+          "score": "1 - 1",
+          "date": "2024-09-28T15:00:00+00:00"
+        },
+        {
+          "opponent": "KAC Kenitra",
+          "score": "2 - 1",
+          "date": "2024-10-04T15:00:00+00:00"
+        },
+        {
+          "opponent": "Olympique Dcheïra",
+          "score": "5 - 0",
+          "date": "2024-10-19T15:00:00+00:00"
+        },
+        {
+          "opponent": "Chabab Atl. Khenifra",
+          "score": "1 - 1",
+          "date": "2024-10-26T15:00:00+00:00"
+        },
+        {
+          "opponent": "Rapide Oued ZEM",
+          "score": "1 - 1",
+          "date": "2024-11-03T15:00:00+00:00"
+        }
+      ]
+    }
+  }
+}

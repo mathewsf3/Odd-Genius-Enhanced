@@ -1,0 +1,22 @@
+ENHANCED COMPREHENSIVE MATCH DATA COLLECTION
+===========================================
+
+Generated: 2025-06-10T15:50:12.023Z
+Version: ENHANCED-COMPREHENSIVE-v2.0
+Target: COMPLETE DATA FOR ONE UPCOMING MATCH WITH LAST 5 HOME/AWAY
+
+SELECTED MATCH:
+Iran vs North Korea
+Home Team ID: 8607
+Away Team ID: 8597
+
+TEAM PERFORMANCE DATA:
+Home Team Last 5 HOME Games: 0
+
+Away Team Last 5 AWAY Games: 0
+
+DATA COLLECTION RESULTS:
+Total Requests: 17
+Successful: 11
+Failed: 6
+Success Rate: 64.7%

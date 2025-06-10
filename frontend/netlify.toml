@@ -1,0 +1,20 @@
+[build]
+  publish = "build"
+  command = "npm run build"
+
+[build.environment]
+  NODE_OPTIONS = "--max-old-space-size=8192"
+  REACT_APP_API_URL = "https://odd-genius-api.onrender.com/api"
+  REACT_APP_ENVIRONMENT = "production"
+  GENERATE_SOURCEMAP = "false"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  REACT_APP_API_URL = "https://odd-genius-api.onrender.com/api"
+
+[context.deploy-preview.environment]
+  REACT_APP_API_URL = "https://odd-genius-api.onrender.com/api"

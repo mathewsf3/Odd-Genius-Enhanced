@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: odd-genius-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALL_SPORTS_API_KEY
+        value: a395e9aacd8a43a76e0f745da1520f95066c0c1342a9d7318e791e19b79241c0
+      - key: API_FOOTBALL_KEY
+        value: 26703e5120975e64fc728bb2661f9acd
+      - key: FRONTEND_URL
+        value: https://odd-genius.netlify.app
+      - key: LOG_LEVEL
+        value: info
+      - key: CACHE_TTL
+        value: "30000"

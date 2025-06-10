@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-06-10T16:07:57.975Z",
+  "task": "Final Team Form Extraction",
+  "targets": {
+    "iranId": 8607,
+    "northKoreaId": 8597,
+    "targetMatchId": 7479469
+  },
+  "results": {
+    "iranHomeGames": [],
+    "northKoreaAwayGames": [],
+    "iranHomeGameCount": 0,
+    "northKoreaAwayGameCount": 0
+  },
+  "performance": {
+    "totalRequests": 6,
+    "successfulRequests": 1,
+    "successRate": "16.7%"
+  },
+  "strategiesAttempted": [
+    "Direct Iran matches - FAILED",
+    "Direct North Korea matches - FAILED",
+    "Target match details - FAILED",
+    "Iran team details - FAILED",
+    "North Korea team details - FAILED",
+    "Today matches analysis - SUCCESS"
+  ],
+  "conclusion": "LIMITATION: No historical form data available in FootyStats for these teams"
+}

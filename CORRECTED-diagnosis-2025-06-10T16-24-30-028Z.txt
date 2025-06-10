@@ -1,0 +1,35 @@
+CORRECTED ORCHESTRATED DATA COLLECTION DIAGNOSIS
+===============================================
+
+Generated: 2025-06-10T16:24:24.608Z
+Target: Iran vs North Korea (Match ID: 7479469)
+Season: 2025
+
+STEP-BY-STEP RESULTS:
+step1_coreMatch: ✅ SUCCESS
+step2_leagueSeason: ❌ FAILED (417)
+  Error: Request failed with status code 417
+step3_leagueTable: ❌ FAILED (undefined)
+step4a_homeTeam: ❌ FAILED (undefined)
+step4b_awayTeam: ❌ FAILED (undefined)
+step5a_iranHome5: ❌ FAILED (undefined)
+step5b_nkAway5: ❌ FAILED (undefined)
+step6a_bttsStats: ❌ FAILED (undefined)
+step6b_over25Stats: ❌ FAILED (undefined)
+step7_referee: ✅ SUCCESS
+step8_players: ❌ FAILED (undefined)
+step9_liveCheck: ❌ FAILED (undefined)
+
+FORM DATA RESULTS:
+Iran HOME games: 0
+North Korea AWAY games: 0
+
+ERROR ANALYSIS:
+HTTP 417 errors: 1
+Missing data points: league-season, league-table, btts-stats, over25-stats
+
+SUCCESS METRICS:
+Total Requests: 3
+Successful: 2
+Failed: 1
+Success Rate: 66.7%

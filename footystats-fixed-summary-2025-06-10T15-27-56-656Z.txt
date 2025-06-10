@@ -1,0 +1,31 @@
+FOOTYSTATS API COMPREHENSIVE TEST SUMMARY - VERSÃO CORRIGIDA
+Generated: 2025-06-10T15:27:23.686Z
+API Key: 4fd202fbc338fbd450e91761c7b83641606b2a4da37dd1a7d29b4cd1d4de9756
+Base URL: https://api.football-data-api.com
+
+CORREÇÕES IMPLEMENTADAS:
+1. H2H via /match endpoint (não existe /h2h dedicado)
+2. Detecção correta de corners/cards em /league-season
+3. Flag correto para upcoming games
+4. Prediction data via campos de risco/potencial
+5. Live games com status=live
+
+OVERALL RESULTS:
+Total Requests: 46
+Successful: 46
+Failed: 0
+Success Rate: 100.00%
+
+DATA COMPLETENESS:
+teamLogos: AVAILABLE
+leagueLogos: AVAILABLE
+formData: AVAILABLE
+cornersData: AVAILABLE
+cardsData: AVAILABLE
+goalsData: AVAILABLE
+bttsData: AVAILABLE
+refereeData: AVAILABLE
+playerData: AVAILABLE
+liveMatchData: AVAILABLE
+upcomingMatchData: AVAILABLE
+predictionData: AVAILABLE

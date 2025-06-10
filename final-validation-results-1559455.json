@@ -1,0 +1,55 @@
+{
+  "endpoints": {
+    "match": {
+      "status": "SUCCESS",
+      "hasData": true,
+      "validated": true,
+      "accuracy": 100
+    },
+    "cards": {
+      "status": "SUCCESS",
+      "hasData": true,
+      "validated": true,
+      "accuracy": 100,
+      "playersFixed": true
+    },
+    "btts": {
+      "status": "SUCCESS",
+      "hasData": true,
+      "validated": true,
+      "accuracy": 100,
+      "goalsSynchronized": false
+    },
+    "players": {
+      "status": "SUCCESS",
+      "hasData": true,
+      "validated": true,
+      "accuracy": 100,
+      "playersFixed": true
+    },
+    "corners": {
+      "status": "SUCCESS",
+      "hasData": true,
+      "validated": true,
+      "accuracy": 100
+    }
+  },
+  "dataQuality": {
+    "cards": {
+      "undefinedPlayers": 0,
+      "unrealisticCards": 0,
+      "isFixed": true
+    },
+    "btts": {
+      "homeGoals": 26,
+      "awayGoals": 16,
+      "hasGoalData": true
+    },
+    "players": {
+      "placeholderPlayers": 0,
+      "totalGoals": 40,
+      "hasRealPlayers": true
+    }
+  },
+  "overallAccuracy": 100
+}

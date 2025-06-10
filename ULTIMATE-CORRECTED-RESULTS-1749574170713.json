@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-06-10T16:49:29.596Z",
+  "version": "ULTIMATE-CORRECTED-FINAL",
+  "target": "IRAN LAST 5 HOME + NK LAST 5 AWAY",
+  "matchInfo": {
+    "id": 7479469,
+    "homeId": 8607,
+    "awayId": 8597,
+    "homeName": "Iran",
+    "awayName": "North Korea",
+    "seasonYear": "2026",
+    "competitionId": 10117,
+    "date": 1749571200,
+    "status": "incomplete"
+  },
+  "formData": {
+    "iranLast5Home": [],
+    "nkLast5Away": []
+  },
+  "additionalData": {},
+  "debugInfo": {},
+  "summary": {
+    "totalRequests": 4,
+    "successfulRequests": 1,
+    "failedRequests": 3,
+    "iranHomeGamesFound": 0,
+    "nkAwayGamesFound": 0
+  }
+}

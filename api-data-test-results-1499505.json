@@ -1,0 +1,652 @@
+{
+  "allSports": {
+    "matchDetails": {
+      "success": true,
+      "data": {
+        "event_key": 1499505,
+        "event_date": "2025-06-03",
+        "event_time": "18:00",
+        "event_home_team": "Oran U21",
+        "home_team_key": 11699,
+        "event_away_team": "USM Alger U21",
+        "away_team_key": 11230,
+        "event_halftime_result": "0 - 1",
+        "event_final_result": "1 - 2",
+        "event_ft_result": "",
+        "event_penalty_result": "",
+        "event_status": "90+",
+        "country_name": "Algeria",
+        "league_name": "Reserve League",
+        "league_key": 436,
+        "league_round": "Round 30",
+        "league_season": "2024/2025",
+        "event_live": "1",
+        "event_stadium": "",
+        "event_referee": "",
+        "home_team_logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg",
+        "away_team_logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg",
+        "event_country_key": 11,
+        "league_logo": null,
+        "country_logo": "https://apiv2.allsportsapi.com/logo/logo_country/11_algeria.png",
+        "event_home_formation": "",
+        "event_away_formation": "",
+        "fk_stage_key": 483,
+        "stage_name": "Current",
+        "league_group": null,
+        "goalscorers": [
+          {
+            "time": "45",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "0 - 1",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "away",
+            "info_time": "1st Half"
+          },
+          {
+            "time": "67",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "0 - 2",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "away",
+            "info_time": "2nd Half"
+          },
+          {
+            "time": "79",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "1 - 2",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "home",
+            "info_time": "2nd Half"
+          }
+        ],
+        "substitutes": [],
+        "cards": [],
+        "vars": {
+          "home_team": [],
+          "away_team": []
+        },
+        "lineups": {
+          "home_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          },
+          "away_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          }
+        },
+        "statistics": []
+      },
+      "hasData": true
+    },
+    "playerStats": {
+      "success": true,
+      "data": {
+        "event_key": 1499505,
+        "event_date": "2025-06-03",
+        "event_time": "18:00",
+        "event_home_team": "Oran U21",
+        "home_team_key": 11699,
+        "event_away_team": "USM Alger U21",
+        "away_team_key": 11230,
+        "event_halftime_result": "0 - 1",
+        "event_final_result": "1 - 2",
+        "event_ft_result": "",
+        "event_penalty_result": "",
+        "event_status": "90+",
+        "country_name": "Algeria",
+        "league_name": "Reserve League",
+        "league_key": 436,
+        "league_round": "Round 30",
+        "league_season": "2024/2025",
+        "event_live": "1",
+        "event_stadium": "",
+        "event_referee": "",
+        "home_team_logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg",
+        "away_team_logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg",
+        "event_country_key": 11,
+        "league_logo": null,
+        "country_logo": "https://apiv2.allsportsapi.com/logo/logo_country/11_algeria.png",
+        "event_home_formation": "",
+        "event_away_formation": "",
+        "fk_stage_key": 483,
+        "stage_name": "Current",
+        "league_group": null,
+        "goalscorers": [
+          {
+            "time": "45",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "0 - 1",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "away",
+            "info_time": "1st Half"
+          },
+          {
+            "time": "67",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "0 - 2",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "away",
+            "info_time": "2nd Half"
+          },
+          {
+            "time": "79",
+            "home_scorer": "",
+            "home_scorer_id": "",
+            "home_assist": "",
+            "home_assist_id": "",
+            "score": "1 - 2",
+            "away_scorer": "",
+            "away_scorer_id": "",
+            "away_assist": "",
+            "away_assist_id": "",
+            "info": "home",
+            "info_time": "2nd Half"
+          }
+        ],
+        "substitutes": [],
+        "cards": [],
+        "vars": {
+          "home_team": [],
+          "away_team": []
+        },
+        "lineups": {
+          "home_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          },
+          "away_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          }
+        },
+        "statistics": [],
+        "player_stats": {
+          "home": [],
+          "away": []
+        }
+      },
+      "hasPlayerData": false
+    }
+  },
+  "apiFootball": {
+    "matchDetails": {
+      "success": true,
+      "hasData": false
+    }
+  },
+  "ourAPI": {
+    "matchDetails": {
+      "success": true,
+      "data": {
+        "id": "1499505",
+        "homeTeam": {
+          "id": "team-11699",
+          "name": "Oran U21",
+          "logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg"
+        },
+        "awayTeam": {
+          "id": "team-11230",
+          "name": "USM Alger U21",
+          "logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg"
+        },
+        "league": {
+          "id": 436,
+          "name": "Reserve League",
+          "logo": null
+        },
+        "date": "2025-06-03",
+        "time": "18:00",
+        "startTime": "2025-06-03T18:00:00",
+        "status": "84",
+        "venue": "",
+        "score": {},
+        "odds": {
+          "home": 0,
+          "draw": 0,
+          "away": 0
+        },
+        "probability": {
+          "home": "0%",
+          "draw": "0%",
+          "away": "0%"
+        },
+        "_unified": true,
+        "_sources": [],
+        "_universal": {
+          "id": "9ef1fba6d1ab7510",
+          "date": "2025-06-03",
+          "league": {
+            "id": 436,
+            "name": "Reserve League"
+          },
+          "homeTeam": {
+            "id": "team-11699",
+            "name": "Oran U21"
+          },
+          "awayTeam": {
+            "id": "team-11230",
+            "name": "USM Alger U21"
+          },
+          "status": "84",
+          "score": {}
+        },
+        "_raw": {
+          "event_key": "1499505",
+          "event_date": "2025-06-03",
+          "event_time": "18:00",
+          "event_home_team": "Oran U21",
+          "event_away_team": "USM Alger U21",
+          "home_team_key": "team-11699",
+          "away_team_key": "team-11230",
+          "home_team_logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg",
+          "away_team_logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg",
+          "event_final_result": "undefined - undefined",
+          "event_status": "84",
+          "event_stadium": "",
+          "league_name": "Reserve League",
+          "league_key": 436,
+          "league_logo": null
+        }
+      },
+      "hasData": true
+    },
+    "cardStats": {
+      "success": true,
+      "data": {
+        "homeStats": {
+          "teamId": "11699",
+          "teamName": "Oran U21",
+          "totalYellowCards": 0,
+          "totalRedCards": 0,
+          "totalCards": 0,
+          "averageYellowCardsPerMatch": 0,
+          "averageRedCardsPerMatch": 0,
+          "averageCardsPerMatch": 0,
+          "cardsByPeriod": {
+            "0-15": 0,
+            "16-30": 0,
+            "31-45": 0,
+            "46-60": 0,
+            "61-75": 0,
+            "76-90": 0
+          },
+          "mostCardedPlayers": [],
+          "overRates": {
+            "3.5": 0,
+            "4.5": 0,
+            "5.5": 0
+          },
+          "matchesAnalyzed": 5
+        },
+        "awayStats": {
+          "teamId": "11230",
+          "teamName": "USM Alger U21",
+          "totalYellowCards": 0,
+          "totalRedCards": 0,
+          "totalCards": 0,
+          "averageYellowCardsPerMatch": 0,
+          "averageRedCardsPerMatch": 0,
+          "averageCardsPerMatch": 0,
+          "cardsByPeriod": {
+            "0-15": 0,
+            "16-30": 0,
+            "31-45": 0,
+            "46-60": 0,
+            "61-75": 0,
+            "76-90": 0
+          },
+          "mostCardedPlayers": [],
+          "overRates": {
+            "3.5": 0,
+            "4.5": 0,
+            "5.5": 0
+          },
+          "matchesAnalyzed": 5
+        },
+        "combinedStats": {
+          "totalCards": 0,
+          "averageCardsPerMatch": 0,
+          "expectedCards": 0,
+          "cardsByPeriod": {
+            "0-15": 0,
+            "16-30": 0,
+            "31-45": 0,
+            "46-60": 0,
+            "61-75": 0,
+            "76-90": 0
+          },
+          "mostCardedPlayers": [],
+          "overRates": {
+            "3.5": 0,
+            "4.5": 0,
+            "5.5": 0
+          },
+          "_debug": {
+            "homeMatches": 5,
+            "awayMatches": 5,
+            "totalFixtures": 10,
+            "poissonLambda": 0
+          }
+        },
+        "matchInfo": {
+          "homeTeam": {
+            "id": "11699",
+            "name": "Oran U21",
+            "logo": "https://apiv2.allsportsapi.com/logo/11699_mc-oran-res..jpg"
+          },
+          "awayTeam": {
+            "id": "11230",
+            "name": "USM Alger U21",
+            "logo": "https://apiv2.allsportsapi.com/logo/11230_usm-alger-res..jpg"
+          }
+        },
+        "metadata": {
+          "matchCount": 5,
+          "dataSource": "AllSportsAPI",
+          "lastUpdated": "2025-06-03T17:59:13.731Z",
+          "dataQuality": {
+            "homeFixtures": 5,
+            "awayFixtures": 5,
+            "totalCardEvents": 0
+          }
+        }
+      },
+      "hasData": true
+    },
+    "bttsStats": {
+      "success": true,
+      "data": {
+        "homeStats": {
+          "teamId": "team-11699",
+          "teamName": "Oran U21",
+          "totalMatches": 5,
+          "bttsYesCount": 4,
+          "bttsYesPercentage": 80,
+          "cleanSheetCount": 0,
+          "cleanSheetPercentage": 0,
+          "failedToScoreCount": 1,
+          "failedToScorePercentage": 20,
+          "totalGoals": 8,
+          "totalGoalsConceded": 14,
+          "averageGoals": 1.6,
+          "averageGoalsConceded": 2.8,
+          "homeMatches": 2,
+          "homeBttsYesCount": 2,
+          "homeBttsYesPercentage": 100,
+          "homeCleanSheetCount": 0,
+          "homeCleanSheetPercentage": 0,
+          "homeFailedToScoreCount": 0,
+          "homeFailedToScorePercentage": 0,
+          "awayMatches": 3,
+          "awayBttsYesCount": 2,
+          "awayBttsYesPercentage": 67,
+          "awayCleanSheetCount": 0,
+          "awayCleanSheetPercentage": 0,
+          "awayFailedToScoreCount": 1,
+          "awayFailedToScorePercentage": 33,
+          "recentForm": [
+            {
+              "matchId": 1499561,
+              "date": "2025-05-29",
+              "opponent": "Belouizdad Res.",
+              "isHome": false,
+              "goalsScored": 1,
+              "goalsConceded": 7,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499488,
+              "date": "2025-05-22",
+              "opponent": "El Bayadh Res.",
+              "isHome": true,
+              "goalsScored": 1,
+              "goalsConceded": 1,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499483,
+              "date": "2025-05-15",
+              "opponent": "US Biskra Res.",
+              "isHome": false,
+              "goalsScored": 0,
+              "goalsConceded": 2,
+              "bttsResult": "No",
+              "cleanSheet": false,
+              "failedToScore": true
+            },
+            {
+              "matchId": 1499475,
+              "date": "2025-05-08",
+              "opponent": "NC Magra Res.",
+              "isHome": true,
+              "goalsScored": 5,
+              "goalsConceded": 1,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499469,
+              "date": "2025-05-01",
+              "opponent": "Khenchela Res.",
+              "isHome": false,
+              "goalsScored": 1,
+              "goalsConceded": 3,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            }
+          ]
+        },
+        "awayStats": {
+          "teamId": "team-11230",
+          "teamName": "USM Alger U21",
+          "totalMatches": 5,
+          "bttsYesCount": 3,
+          "bttsYesPercentage": 60,
+          "cleanSheetCount": 0,
+          "cleanSheetPercentage": 0,
+          "failedToScoreCount": 2,
+          "failedToScorePercentage": 40,
+          "totalGoals": 3,
+          "totalGoalsConceded": 6,
+          "averageGoals": 0.6,
+          "averageGoalsConceded": 1.2,
+          "homeMatches": 3,
+          "homeBttsYesCount": 2,
+          "homeBttsYesPercentage": 67,
+          "homeCleanSheetCount": 0,
+          "homeCleanSheetPercentage": 0,
+          "homeFailedToScoreCount": 1,
+          "homeFailedToScorePercentage": 33,
+          "awayMatches": 2,
+          "awayBttsYesCount": 1,
+          "awayBttsYesPercentage": 50,
+          "awayCleanSheetCount": 0,
+          "awayCleanSheetPercentage": 0,
+          "awayFailedToScoreCount": 1,
+          "awayFailedToScorePercentage": 50,
+          "recentForm": [
+            {
+              "matchId": 1499498,
+              "date": "2025-05-29",
+              "opponent": "ES Sétif Res.",
+              "isHome": true,
+              "goalsScored": 1,
+              "goalsConceded": 2,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499493,
+              "date": "2025-05-22",
+              "opponent": "Khenchela Res.",
+              "isHome": false,
+              "goalsScored": 0,
+              "goalsConceded": 1,
+              "bttsResult": "No",
+              "cleanSheet": false,
+              "failedToScore": true
+            },
+            {
+              "matchId": 1499484,
+              "date": "2025-05-15",
+              "opponent": "Olympique Akbou Res.",
+              "isHome": true,
+              "goalsScored": 1,
+              "goalsConceded": 1,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499479,
+              "date": "2025-05-08",
+              "opponent": "Paradou AC Res.",
+              "isHome": false,
+              "goalsScored": 1,
+              "goalsConceded": 1,
+              "bttsResult": "Yes",
+              "cleanSheet": false,
+              "failedToScore": false
+            },
+            {
+              "matchId": 1499468,
+              "date": "2025-05-01",
+              "opponent": "CS Constantine Res.",
+              "isHome": true,
+              "goalsScored": 0,
+              "goalsConceded": 1,
+              "bttsResult": "No",
+              "cleanSheet": false,
+              "failedToScore": true
+            }
+          ]
+        },
+        "h2hStats": {
+          "totalMatches": 0,
+          "bttsYesCount": 0,
+          "bttsYesPercentage": 0,
+          "homeTeamWins": 0,
+          "awayTeamWins": 0,
+          "draws": 0,
+          "homeTeamGoals": 0,
+          "awayTeamGoals": 0,
+          "averageTotalGoals": 0,
+          "recentH2HForm": []
+        },
+        "combinedStats": {
+          "bttsYesProbability": 70,
+          "confidenceLevel": "Medium",
+          "prediction": "Yes",
+          "averageHomeTeamGoals": 1.6,
+          "averageAwayTeamGoals": 0.6,
+          "averageTotalGoals": 2.2,
+          "homeTeamCleanSheetProbability": 0,
+          "awayTeamCleanSheetProbability": 0,
+          "homeTeamFailToScoreProbability": 20,
+          "awayTeamFailToScoreProbability": 40
+        }
+      },
+      "hasData": true
+    },
+    "playerStats": {
+      "success": true,
+      "data": {
+        "homeTeamPlayers": {
+          "teamId": "11699",
+          "teamName": "Oran U21",
+          "players": [],
+          "gameCount": 5,
+          "enhanced": true
+        },
+        "awayTeamPlayers": {
+          "teamId": "11230",
+          "teamName": "USM Alger U21",
+          "players": [],
+          "gameCount": 5,
+          "enhanced": true
+        },
+        "topScorers": {
+          "players": []
+        },
+        "lineups": {
+          "home_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          },
+          "away_team": {
+            "starting_lineups": [],
+            "substitutes": [],
+            "coaches": [],
+            "missing_players": []
+          }
+        },
+        "isFallbackData": false,
+        "gameCount": 5,
+        "validation": {
+          "issues": [],
+          "warnings": [],
+          "summary": {
+            "totalPlayers": 0,
+            "totalGoals": 0,
+            "totalAssists": 0,
+            "goalkeepers": 0,
+            "goalkeeperGames": 0
+          },
+          "status": "valid",
+          "accuracy": 100
+        },
+        "enhanced": true,
+        "enhancementTimestamp": "2025-06-03T18:01:33.562Z"
+      },
+      "hasData": true
+    }
+  }
+}

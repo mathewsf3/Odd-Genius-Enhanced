@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Debug Tool</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .warning { background-color: #fff3cd; border-color: #ffeaa7; }
+        .loading { background-color: #e2e3e5; border-color: #d6d8db; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        .endpoint { margin: 10px 0; padding: 10px; border-left: 4px solid #007bff; background: #f8f9fa; }
+        .status { font-weight: bold; margin-right: 10px; }
+        .url { font-family: monospace; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Match Debug Tool</h1>
+        <p>This tool tests the backend API endpoints directly to diagnose frontend issues.</p>
+        
+        <div class="test-section">
+            <h3>🎯 Match Configuration</h3>
+            <label>Match ID: <input type="text" id="matchId" value="1570056" placeholder="Enter match ID"></label>
+            <label>Game Count: <input type="number" id="gameCount" value="10" min="1" max="20"></label>
+            <button onclick="runAllTests()">🚀 Run All Tests</button>
+            <button onclick="clearResults()">🧹 Clear Results</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:5000/api';
+        
+        const endpoints = [
+            { name: 'Match Details', path: '/matches/{id}', critical: true },
+            { name: 'Unified Match Data', path: '/admin/matches/{id}/unified', critical: true },
+            { name: 'H2H Data', path: '/matches/{id}/h2h', critical: true },
+            { name: 'Corner Stats', path: '/matches/{id}/corners?matches={count}', critical: false },
+            { name: 'Card Stats', path: '/matches/{id}/cards?matches={count}', critical: true },
+            { name: 'BTTS Stats', path: '/matches/{id}/btts?matches={count}', critical: true },
+            { name: 'Player Stats', path: '/matches/{id}/players?matches={count}', critical: false }
+        ];
+
+        async function testEndpoint(endpoint, matchId, gameCount) {
+            const url = `${BASE_URL}${endpoint.path.replace('{id}', matchId).replace('{count}', gameCount)}`;
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const responseTime = Date.now() - startTime;
+                const data = await response.json();
+                
+                return {
+                    success: response.ok && data.success,
+                    status: response.status,
+                    responseTime,
+                    data,
+                    url,
+                    error: null
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    status: 0,
+                    responseTime: Date.now() - startTime,
+                    data: null,
+                    url,
+                    error: error.message
+                };
+            }
+        }
+
+        function renderEndpointResult(endpoint, result) {
+            const statusClass = result.success ? 'success' : 'error';
+            const statusIcon = result.success ? '✅' : '❌';
+            const criticalBadge = endpoint.critical ? '<span style="background: #dc3545; color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px;">CRITICAL</span>' : '';
+            
+            let dataInfo = '';
+            if (result.success && result.data?.result) {
+                const data = result.data.result;
+                
+                if (endpoint.name === 'Match Details' || endpoint.name === 'Unified Match Data') {
+                    const homeTeam = data.universal?.homeTeam?.name || data.event_home_team || data.homeTeam?.name || 'Unknown';
+                    const awayTeam = data.universal?.awayTeam?.name || data.event_away_team || data.awayTeam?.name || 'Unknown';
+                    dataInfo = `<div><strong>Teams:</strong> ${homeTeam} vs ${awayTeam}</div>`;
+                } else if (endpoint.name === 'H2H Data') {
+                    const matches = data.matches?.length || 0;
+                    dataInfo = `<div><strong>H2H Matches:</strong> ${matches}</div>`;
+                } else if (endpoint.name.includes('Stats')) {
+                    const hasHomeStats = !!data.homeStats;
+                    const hasAwayStats = !!data.awayStats;
+                    const message = data.message || '';
+                    dataInfo = `<div><strong>Data:</strong> Home: ${hasHomeStats ? '✅' : '❌'}, Away: ${hasAwayStats ? '✅' : '❌'}</div>`;
+                    if (message) {
+                        dataInfo += `<div><strong>Message:</strong> ${message}</div>`;
+                    }
+                }
+            }
+            
+            const errorInfo = result.error ? `<div style="color: #dc3545;"><strong>Error:</strong> ${result.error}</div>` : '';
+            
+            return `
+                <div class="endpoint ${statusClass}">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span class="status">${statusIcon} ${endpoint.name}</span>
+                            ${criticalBadge}
+                        </div>
+                        <div>
+                            <span style="color: #6c757d;">${result.responseTime}ms</span>
+                            <span style="margin-left: 10px; color: ${result.status >= 200 && result.status < 300 ? '#28a745' : '#dc3545'};">
+                                ${result.status || 'No Response'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="url">${result.url}</div>
+                    ${dataInfo}
+                    ${errorInfo}
+                </div>
+            `;
+        }
+
+        async function runAllTests() {
+            const matchId = document.getElementById('matchId').value;
+            const gameCount = document.getElementById('gameCount').value;
+            const resultsDiv = document.getElementById('results');
+            
+            if (!matchId) {
+                alert('Please enter a match ID');
+                return;
+            }
+            
+            resultsDiv.innerHTML = '<div class="test-section loading"><h3>🔄 Running Tests...</h3></div>';
+            
+            const results = [];
+            let successCount = 0;
+            let criticalFailures = 0;
+            
+            for (const endpoint of endpoints) {
+                const result = await testEndpoint(endpoint, matchId, gameCount);
+                results.push({ endpoint, result });
+                
+                if (result.success) {
+                    successCount++;
+                } else if (endpoint.critical) {
+                    criticalFailures++;
+                }
+                
+                // Update results in real-time
+                const currentResults = results.map(r => renderEndpointResult(r.endpoint, r.result)).join('');
+                resultsDiv.innerHTML = `
+                    <div class="test-section">
+                        <h3>📊 Test Results (${successCount}/${endpoints.length} passed)</h3>
+                        ${currentResults}
+                    </div>
+                `;
+            }
+            
+            // Add summary
+            const summaryClass = criticalFailures > 0 ? 'error' : successCount === endpoints.length ? 'success' : 'warning';
+            const summaryIcon = criticalFailures > 0 ? '❌' : successCount === endpoints.length ? '✅' : '⚠️';
+            
+            let diagnosis = '';
+            if (criticalFailures > 0) {
+                diagnosis = '❌ <strong>Critical backend issues detected.</strong> Fix backend endpoints first.';
+            } else if (successCount === endpoints.length) {
+                diagnosis = '✅ <strong>All backend endpoints working.</strong> Issue is in frontend JavaScript/React components.';
+            } else {
+                diagnosis = '⚠️ <strong>Some endpoints failing.</strong> Check non-critical endpoints.';
+            }
+            
+            const frontendSteps = criticalFailures === 0 ? `
+                <h4>🔧 Frontend Debugging Steps:</h4>
+                <ol>
+                    <li>Open <a href="http://localhost:3001/match/${matchId}" target="_blank">http://localhost:3001/match/${matchId}</a></li>
+                    <li>Open Browser Developer Tools (F12)</li>
+                    <li>Check Console tab for JavaScript errors</li>
+                    <li>Check Network tab for failed requests</li>
+                    <li>Verify requests are being made to these working endpoints</li>
+                    <li>Check if React components are rendering properly</li>
+                </ol>
+            ` : '';
+            
+            resultsDiv.innerHTML += `
+                <div class="test-section ${summaryClass}">
+                    <h3>${summaryIcon} Diagnosis</h3>
+                    <p>${diagnosis}</p>
+                    ${frontendSteps}
+                </div>
+            `;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // Auto-run tests on page load
+        window.onload = () => {
+            setTimeout(runAllTests, 1000);
+        };
+    </script>
+</body>
+</html>

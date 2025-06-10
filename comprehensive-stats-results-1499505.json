@@ -1,0 +1,14 @@
+{
+  "allSports": {
+    "corners": false,
+    "cards": false,
+    "playerStats": false,
+    "leagueStats": true
+  },
+  "apiFootball": {
+    "corners": false,
+    "cards": false,
+    "playerStats": false,
+    "leagueStats": true
+  }
+}

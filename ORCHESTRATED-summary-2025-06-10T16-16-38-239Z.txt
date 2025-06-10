@@ -1,0 +1,21 @@
+ORCHESTRATED SINGLE MATCH DATA COLLECTION
+=========================================
+
+Target Match: Iran vs North Korea (ID: 7479469)
+Generated: 2025-06-10T16:16:24.234Z
+Version: ORCHESTRATED-SINGLE-MATCH-v1.0
+
+ORCHESTRATION RESULTS:
+Total Steps: 10
+Completed: 9
+Failed: 1
+Success Rate: 90.0%
+Data Size: 2.84 MB
+
+TEAM FORM DATA:
+Iran (Home) Last 5 Home Games: 0
+
+North Korea (Away) Last 5 Away Games: 0
+
+ERRORS:
+Step 2: League Season Context (cards/corners averages, xG) - Request failed with status code 417

@@ -1,0 +1,895 @@
+/**
+ * Matches Controller - FootyStats API Only
+ * 
+ * This controller handles all match-related requests using exclusively FootyStats API.
+ * All legacy API integrations (AllSports, API Football) have been removed.
+ */
+
+const footyStatsApiService = require('../services/footyStatsApiService');
+const logger = require('../utils/logger');
+
+const matchesController = {
+  // Get live matches
+  getLiveMatches: async (req, res) => {
+    // ...existing implementation...
+  },
+
+  // Get upcoming matches
+  getUpcomingMatches: async (req, res) => {
+    // ...existing implementation...
+  },
+
+  // Get match details by ID
+  getMatchDetails: async (req, res) => {
+    // ...existing implementation...
+  },
+
+  // Get match by ID (alias for getMatchDetails)
+  getMatchById: async (req, res) => {
+    // Simply call the existing getMatchDetails method
+    return await matchesController.getMatchDetails(req, res);
+  },
+
+  // Get matches for a specific league
+  getLeagueMatches: async (req, res) => {
+    // ...existing implementation...
+  },
+
+  // Get live leagues
+  getLiveLeagues: async (req, res) => {
+    // ...existing implementation...
+  },
+
+  // Clear cache (FootyStats only)
+  clearCache: async (req, res) => {
+    try {
+      logger.info('Clearing FootyStats cache', { controller: 'matches' });
+
+      // Clear FootyStats API cache
+      await footyStatsApiService.clearCache();
+
+      res.json({
+        success: true,
+        message: 'FootyStats cache cleared successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      logger.error('Error clearing cache', { error: error.message, controller: 'matches' });
+      res.status(500).json({
+        success: false,
+        error: 'Failed to clear cache',
+        message: error.message
+      });
+    }
+  }
+};
+
+module.exports = matchesController;
+  // Get live matches
+  getLiveMatches: async (req, res) => {
+    try {
+      const refresh = req.query.refresh === 'true';
+      logger.info(`Getting live matches from FootyStats. Refresh: ${refresh}`, { controller: 'matches' });
+
+      // Use FootyStats API for today's matches (includes live matches)
+      const todayMatches = await footyStatsApiService.getTodayMatches();
+
+      if (!todayMatches || !todayMatches.data) {
+        logger.warn('No live matches data available from FootyStats', { controller: 'matches' });
+        return res.json({
+          success: true,
+          result: [],
+          count: 0,
+          message: "No live matches currently available."
+        });
+      }
+
+      // Filter only live/in-play matches
+      const liveMatches = todayMatches.data.filter(match => 
+        match.status === 'inplay' || 
+        match.status === 'live' || 
+        match.status === '1H' || 
+        match.status === '2H' ||
+        match.status === 'HT'
+      );
+
+      // Transform to expected format
+      const transformedMatches = liveMatches.map(match => ({
+        id: match.id.toString(),
+        homeTeam: {
+          id: match.home_id?.toString() || 'unknown',
+          name: match.home_name || 'Unknown Team',
+          logo: match.home_image || null
+        },
+        awayTeam: {
+          id: match.away_id?.toString() || 'unknown', 
+          name: match.away_name || 'Unknown Team',
+          logo: match.away_image || null
+        },
+        league: {
+          id: match.competition_id?.toString() || 'unknown',
+          name: match.competition_name || 'Unknown League',
+          country: match.country || 'Unknown',
+          logo: null
+        },
+        date: match.date_unix ? new Date(match.date_unix * 1000).toISOString().split('T')[0] : null,
+        time: match.time || null,
+        status: match.status || 'unknown',
+        score: {
+          home: match.homeGoalCount || 0,
+          away: match.awayGoalCount || 0
+        },
+        venue: match.venue || null,
+        dataSource: 'footystats'
+      }));
+
+      logger.info(`Returning ${transformedMatches.length} live matches from FootyStats`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: transformedMatches,
+        count: transformedMatches.length,
+        message: transformedMatches.length === 0 ? "No live matches currently available." : undefined
+      });
+    } catch (error) {
+      logger.error('Error fetching live matches', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch live matches',
+        message: error.message
+      });
+    }
+  },
+
+  // Get upcoming matches
+  getUpcomingMatches: async (req, res) => {
+    try {
+      const hours = parseInt(req.query.hours) || 48;
+      logger.info(`Getting upcoming matches for ${hours} hours from FootyStats`, { controller: 'matches' });
+
+      // Use FootyStats API for today's matches and filter upcoming
+      const todayMatches = await footyStatsApiService.getTodayMatches();
+
+      if (!todayMatches || !todayMatches.data) {
+        logger.warn('No upcoming matches data available from FootyStats', { controller: 'matches' });
+        return res.json({
+          success: true,
+          result: [],
+          count: 0,
+          message: "No upcoming matches found."
+        });
+      }
+
+      // Filter upcoming matches within the specified hours
+      const now = Date.now();
+      const maxTime = now + (hours * 60 * 60 * 1000);
+
+      const upcomingMatches = todayMatches.data.filter(match => {
+        if (!match.date_unix) return false;
+        const matchTime = match.date_unix * 1000;
+        return matchTime > now && matchTime <= maxTime && 
+               (match.status === 'scheduled' || match.status === 'not_started' || !match.status);
+      });
+
+      // Transform to expected format  
+      const transformedMatches = upcomingMatches.map(match => ({
+        id: match.id.toString(),
+        homeTeam: {
+          id: match.home_id?.toString() || 'unknown',
+          name: match.home_name || 'Unknown Team',
+          logo: match.home_image || null
+        },
+        awayTeam: {
+          id: match.away_id?.toString() || 'unknown',
+          name: match.away_name || 'Unknown Team', 
+          logo: match.away_image || null
+        },
+        league: {
+          id: match.competition_id?.toString() || 'unknown',
+          name: match.competition_name || 'Unknown League',
+          country: match.country || 'Unknown',
+          logo: null
+        },
+        date: match.date_unix ? new Date(match.date_unix * 1000).toISOString().split('T')[0] : null,
+        time: match.time || null,
+        status: match.status || 'scheduled',
+        venue: match.venue || null,
+        dataSource: 'footystats'
+      }));
+
+      logger.info(`Returning ${transformedMatches.length} upcoming matches from FootyStats`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: transformedMatches,
+        count: transformedMatches.length,
+        message: transformedMatches.length === 0 ? "No upcoming matches found in the selected time period." : undefined
+      });
+    } catch (error) {
+      logger.error('Error fetching upcoming matches', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch upcoming matches',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match details by ID
+  getMatchDetails: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting match details for ID: ${matchId} from FootyStats`, { controller: 'matches' });
+
+      const matchDetails = await footyStatsApiService.getMatchDetails(matchId);
+
+      if (!matchDetails || !matchDetails.data) {
+        logger.warn(`Match not found for ID: ${matchId}`, { controller: 'matches' });
+        return res.status(404).json({
+          success: false,
+          error: 'Match not found'
+        });
+      }
+
+      const match = matchDetails.data;
+
+      // Transform to expected format
+      const transformedMatch = {
+        id: match.id?.toString() || matchId,
+        homeTeam: {
+          id: match.home_id?.toString() || 'unknown',
+          name: match.home_name || 'Unknown Team',
+          logo: match.home_image || null
+        },
+        awayTeam: {
+          id: match.away_id?.toString() || 'unknown',
+          name: match.away_name || 'Unknown Team',
+          logo: match.away_image || null
+        },
+        league: {
+          id: match.competition_id?.toString() || 'unknown',
+          name: match.competition_name || 'Unknown League',
+          country: match.country || 'Unknown',
+          logo: null
+        },
+        date: match.date_unix ? new Date(match.date_unix * 1000).toISOString().split('T')[0] : null,
+        time: match.time || null,
+        startTime: match.date_unix ? new Date(match.date_unix * 1000).toISOString() : null,
+        status: match.status || 'unknown',
+        venue: match.venue || null,
+        score: {
+          home: match.homeGoalCount || 0,
+          away: match.awayGoalCount || 0
+        },
+        odds: match.odds || { home: 0, draw: 0, away: 0 },
+        dataSource: 'footystats'
+      };
+
+      logger.info(`Returning match details for ID: ${matchId}`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: transformedMatch
+      });
+    } catch (error) {
+      logger.error(`Error fetching match details for ID: ${req.params.id}`, { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch match details',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match by ID (alias for getMatchDetails)
+  getMatchById: async (req, res) => {
+    // Simply call the existing getMatchDetails method
+    return await matchesController.getMatchDetails(req, res);
+  },
+
+  // Get matches for a specific league
+  getLeagueMatches: async (req, res) => {
+    try {
+      const leagueId = req.params.leagueId;
+      const { season, date, status, limit = 50 } = req.query;
+      
+      logger.info(`Getting league matches for league ${leagueId} from FootyStats`, { 
+        controller: 'matches',
+        leagueId,
+        season,
+        date,
+        status,
+        limit
+      });
+
+      const leagueMatches = await footyStatsApiService.getLeagueMatches(leagueId, {
+        season,
+        date,
+        status
+      });
+
+      if (!leagueMatches || !leagueMatches.data) {
+        logger.warn(`No matches found for league: ${leagueId}`, { controller: 'matches' });
+        return res.json({
+          success: true,
+          result: [],
+          count: 0,
+          message: `No matches found for league ${leagueId}`
+        });
+      }
+
+      // Transform matches to expected format
+      const transformedMatches = leagueMatches.data.slice(0, parseInt(limit)).map(match => ({
+        id: match.id?.toString() || 'unknown',
+        homeTeam: {
+          id: match.home_id?.toString() || 'unknown',
+          name: match.home_name || 'Unknown Team',
+          logo: match.home_image || null
+        },
+        awayTeam: {
+          id: match.away_id?.toString() || 'unknown',
+          name: match.away_name || 'Unknown Team',
+          logo: match.away_image || null
+        },
+        league: {
+          id: match.competition_id?.toString() || leagueId,
+          name: match.competition_name || 'Unknown League',
+          country: match.country || 'Unknown',
+          logo: null
+        },
+        date: match.date_unix ? new Date(match.date_unix * 1000).toISOString().split('T')[0] : null,
+        time: match.time || null,
+        status: match.status || 'unknown',
+        score: {
+          home: match.homeGoalCount || 0,
+          away: match.awayGoalCount || 0
+        },
+        venue: match.venue || null,
+        dataSource: 'footystats'
+      }));
+
+      logger.info(`Returning ${transformedMatches.length} matches for league ${leagueId}`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: transformedMatches,
+        count: transformedMatches.length,
+        totalAvailable: leagueMatches.data.length,
+        league: {
+          id: leagueId,
+          name: transformedMatches.length > 0 ? transformedMatches[0].league.name : 'Unknown League'
+        }
+      });
+    } catch (error) {
+      logger.error(`Error fetching league matches for ${req.params.leagueId}`, { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch league matches',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match stats by ID
+  getMatchStats: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting match stats for ID: ${matchId} from FootyStats`, { controller: 'matches' });
+
+      const matchStats = await footyStatsApiService.getMatchDetails(matchId);
+
+      if (!matchStats || !matchStats.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Match stats not found'
+        });
+      }
+
+      logger.info(`Returning match stats for ID: ${matchId}`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: matchStats.data
+      });
+    } catch (error) {
+      logger.error('Error fetching match stats', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch match stats',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match head-to-head data
+  getMatchHeadToHead: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting H2H data for match ${matchId} from FootyStats`, { controller: 'matches' });
+
+      // First get match details to extract team IDs
+      const matchDetails = await footyStatsApiService.getMatchDetails(matchId);
+      
+      if (!matchDetails || !matchDetails.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Match not found for H2H data'
+        });
+      }
+
+      const match = matchDetails.data;
+      const homeTeamId = match.home_id;
+      const awayTeamId = match.away_id;
+
+      if (!homeTeamId || !awayTeamId) {
+        return res.status(400).json({
+          success: false,
+          error: 'Team IDs not found in match data'
+        });
+      }
+
+      // Get H2H data using FootyStats
+      const h2hData = await footyStatsApiService.getHeadToHead(homeTeamId, awayTeamId);
+
+      if (!h2hData || !h2hData.data) {
+        logger.warn(`No H2H data available for teams ${homeTeamId} vs ${awayTeamId}`, { controller: 'matches' });
+        return res.json({
+          success: true,
+          result: {
+            totalMatches: 0,
+            homeTeamWins: 0,
+            awayTeamWins: 0,
+            draws: 0,
+            recentMatches: [],
+            message: 'No head-to-head data available'
+          }
+        });
+      }
+
+      return res.json({
+        success: true,
+        result: h2hData.data
+      });
+
+    } catch (error) {
+      logger.error(`Error getting H2H data for match ${req.params.id}`, { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch head-to-head data',
+        message: error.message
+      });
+    }
+  },
+
+  // Get team form data
+  getTeamForm: async (req, res) => {
+    try {
+      const teamId = req.params.teamId;
+      const matches = parseInt(req.query.matches) || 10;
+      logger.info(`Getting team form for team ${teamId}, last ${matches} matches from FootyStats`, { controller: 'matches' });
+
+      const teamStats = await footyStatsApiService.getTeamStats(teamId);
+
+      if (!teamStats || !teamStats.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Team form data not found'
+        });
+      }
+
+      // Extract form data from team stats
+      const formData = {
+        teamId: teamId,
+        teamName: teamStats.data.name || 'Unknown Team',
+        matches: teamStats.data.recent_matches || [],
+        summary: {
+          wins: teamStats.data.wins || 0,
+          draws: teamStats.data.draws || 0,
+          losses: teamStats.data.losses || 0,
+          goalsFor: teamStats.data.goals_for || 0,
+          goalsAgainst: teamStats.data.goals_against || 0
+        },
+        dataSource: 'footystats'
+      };
+
+      logger.info(`Returning form data for team ${teamId}`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: formData
+      });
+    } catch (error) {
+      logger.error('Error fetching team form data', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch team form data',
+        message: error.message
+      });
+    }
+  },
+
+  // Get league standings
+  getLeagueStandings: async (req, res) => {
+    try {
+      const leagueId = req.params.leagueId;
+      logger.info(`Getting league standings for league ${leagueId} from FootyStats`, { controller: 'matches' });
+
+      const standings = await footyStatsApiService.getLeagueStandings(leagueId);
+
+      if (!standings || !standings.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'League standings not found'
+        });
+      }
+
+      logger.info(`Returning standings for league ${leagueId}`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: standings.data
+      });
+    } catch (error) {
+      logger.error('Error fetching league standings', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch league standings',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match corner statistics
+  getMatchCornerStats: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      const matchCount = parseInt(req.query.matches) || 10;
+      logger.info(`Getting corner stats for match ${matchId} from FootyStats`, { controller: 'matches' });
+
+      // Get match details first
+      const matchDetails = await footyStatsApiService.getMatchDetails(matchId);
+      
+      if (!matchDetails || !matchDetails.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Match not found for corner stats'
+        });
+      }
+
+      const match = matchDetails.data;
+      const homeTeamId = match.home_id;
+      const awayTeamId = match.away_id;
+
+      // Get corner stats for both teams
+      const cornerStats = await footyStatsApiService.getTeamCornerStats(homeTeamId, awayTeamId);
+
+      if (!cornerStats) {
+        return res.json({
+          success: true,
+          result: {
+            homeStats: null,
+            awayStats: null,
+            overUnderPredictions: null,
+            cornerProbabilities: null,
+            dataSource: 'footystats',
+            message: 'Corner statistics temporarily unavailable'
+          }
+        });
+      }
+
+      return res.json({
+        success: true,
+        result: cornerStats
+      });
+    } catch (error) {
+      logger.error('Error fetching corner statistics', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch corner statistics',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match card statistics
+  getMatchCardStats: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting card stats for match ${matchId} from FootyStats`, { controller: 'matches' });
+
+      // Get match details first
+      const matchDetails = await footyStatsApiService.getMatchDetails(matchId);
+      
+      if (!matchDetails || !matchDetails.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Match not found for card stats'
+        });
+      }
+
+      const match = matchDetails.data;
+
+      // For card stats, we can extract from match details or get team-specific stats
+      const cardStats = {
+        homeStats: {
+          teamName: match.home_name,
+          totalCards: match.home_cards || 0,
+          yellowCards: match.home_yellow_cards || 0,
+          redCards: match.home_red_cards || 0
+        },
+        awayStats: {
+          teamName: match.away_name,
+          totalCards: match.away_cards || 0,
+          yellowCards: match.away_yellow_cards || 0,
+          redCards: match.away_red_cards || 0
+        },
+        combinedStats: {
+          totalCards: (match.home_cards || 0) + (match.away_cards || 0),
+          averageCardsPerMatch: 0 // Would need historical data
+        },
+        dataSource: 'footystats',
+        isFallbackData: false
+      };
+
+      return res.json({
+        success: true,
+        result: cardStats
+      });
+    } catch (error) {
+      logger.error('Error fetching card statistics', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch card statistics',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match BTTS statistics
+  getMatchBTTSStats: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting BTTS stats for match ${matchId} from FootyStats`, { controller: 'matches' });
+
+      // Use FootyStats BTTS endpoint
+      const bttsStats = await footyStatsApiService.getBTTSStats();
+
+      if (!bttsStats) {
+        return res.json({
+          success: true,
+          result: {
+            homeStats: null,
+            awayStats: null,
+            prediction: 'insufficient_data',
+            dataSource: 'footystats',
+            message: 'BTTS statistics temporarily unavailable'
+          }
+        });
+      }
+
+      return res.json({
+        success: true,
+        result: bttsStats
+      });
+    } catch (error) {
+      logger.error('Error fetching BTTS statistics', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch BTTS statistics',
+        message: error.message
+      });
+    }
+  },
+
+  // Get match player statistics
+  getMatchPlayerStats: async (req, res) => {
+    try {
+      const matchId = req.params.id;
+      logger.info(`Getting player stats for match ${matchId} from FootyStats`, { controller: 'matches' });
+
+      // Get match details first to extract team info
+      const matchDetails = await footyStatsApiService.getMatchDetails(matchId);
+      
+      if (!matchDetails || !matchDetails.data) {
+        return res.status(404).json({
+          success: false,
+          error: 'Match not found for player stats'
+        });
+      }
+
+      const match = matchDetails.data;
+      const homeTeamId = match.home_id;
+      const awayTeamId = match.away_id;
+
+      // Get player stats for both teams
+      const [homePlayerStats, awayPlayerStats] = await Promise.all([
+        footyStatsApiService.getLeaguePlayers(match.competition_id, { team_id: homeTeamId }),
+        footyStatsApiService.getLeaguePlayers(match.competition_id, { team_id: awayTeamId })
+      ]);
+
+      const playerStats = {
+        homeTeamPlayers: {
+          teamName: match.home_name,
+          players: homePlayerStats?.data || []
+        },
+        awayTeamPlayers: {
+          teamName: match.away_name,
+          players: awayPlayerStats?.data || []
+        },
+        dataSource: 'footystats',
+        enhanced: true
+      };
+
+      return res.json({
+        success: true,
+        result: playerStats
+      });
+    } catch (error) {
+      logger.error('Error fetching player statistics', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch player statistics',
+        message: error.message
+      });
+    }
+  },
+
+  // Get all leagues
+  getAllLeagues: async (req, res) => {
+    try {
+      const countryId = req.query.countryId;
+      logger.info(`Getting all leagues from FootyStats, CountryID: ${countryId || 'all'}`, { controller: 'matches' });
+
+      const leagues = await footyStatsApiService.getLeagueList();
+
+      if (!leagues || !leagues.data) {
+        return res.json({
+          success: true,
+          result: []
+        });
+      }
+
+      // Transform leagues to expected format
+      let allLeagues = leagues.data.map(league => ({
+        id: league.id?.toString() || 'unknown',
+        name: league.name || 'Unknown League',
+        country: league.country || 'International',
+        logo: league.image || null,
+        season: league.season || new Date().getFullYear(),
+        type: 'league',
+        dataSource: 'footystats'
+      }));
+
+      // Filter by country if specified
+      if (countryId) {
+        allLeagues = allLeagues.filter(league => 
+          league.country === countryId || league.id === countryId
+        );
+      }
+
+      logger.info(`Returning ${allLeagues.length} leagues from FootyStats`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: allLeagues
+      });
+    } catch (error) {
+      logger.error('Error fetching leagues', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch leagues',
+        message: error.message
+      });
+    }
+  },
+
+  // Get live leagues (leagues with live matches)
+  getLiveLeagues: async (req, res) => {
+    try {
+      logger.info('Getting live leagues from FootyStats', { controller: 'matches' });
+
+      // Get today's matches to determine which leagues have live matches
+      const todayMatches = await footyStatsApiService.getTodayMatches();
+
+      if (!todayMatches || !todayMatches.data) {
+        return res.json({
+          success: true,
+          result: {
+            leagues: [],
+            groupedByCountry: [],
+            totalLeagues: 0,
+            totalMatches: 0
+          }
+        });
+      }
+
+      // Extract unique leagues from today's matches
+      const leagueMap = new Map();
+      todayMatches.data.forEach(match => {
+        if (match.competition_name && match.competition_id) {
+          const leagueId = match.competition_id.toString();
+          if (!leagueMap.has(leagueId)) {
+            leagueMap.set(leagueId, {
+              id: leagueId,
+              name: match.competition_name,
+              country: match.country || 'International',
+              logo: null,
+              season: new Date().getFullYear(),
+              type: 'league',
+              totalMatchCount: 1,
+              isActive: true,
+              dataSource: 'footystats'
+            });
+          } else {
+            const existing = leagueMap.get(leagueId);
+            existing.totalMatchCount++;
+          }
+        }
+      });
+
+      const liveLeagues = Array.from(leagueMap.values());
+
+      // Group by country
+      const countryGroups = {};
+      liveLeagues.forEach(league => {
+        const country = league.country || 'International';
+        if (!countryGroups[country]) {
+          countryGroups[country] = [];
+        }
+        countryGroups[country].push(league);
+      });
+
+      // Convert to array format
+      const groupedByCountry = Object.keys(countryGroups).map(country => ({
+        country,
+        leagues: countryGroups[country].sort((a, b) => b.totalMatchCount - a.totalMatchCount),
+        totalMatches: countryGroups[country].reduce((sum, league) => sum + league.totalMatchCount, 0)
+      })).sort((a, b) => b.totalMatches - a.totalMatches);
+
+      logger.info(`Returning ${liveLeagues.length} active leagues from FootyStats`, { controller: 'matches' });
+
+      return res.json({
+        success: true,
+        result: {
+          leagues: liveLeagues,
+          groupedByCountry,
+          totalLeagues: liveLeagues.length,
+          totalMatches: todayMatches.data.length,
+          lastUpdated: new Date().toISOString()
+        }
+      });
+    } catch (error) {
+      logger.error('Error fetching live leagues', { error: error.message, controller: 'matches' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to fetch live leagues',
+        message: error.message
+      });
+    }
+  },
+
+  // Clear cache (FootyStats only)
+  clearCache: async (req, res) => {
+    try {
+      logger.info('Clearing FootyStats cache', { controller: 'matches' });
+
+      // Clear FootyStats API cache
+      await footyStatsApiService.clearCache();
+
+      res.json({
+        success: true,
+        message: 'FootyStats cache cleared successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      logger.error('Error clearing cache', { error: error.message, controller: 'matches' });
+      res.status(500).json({
+        success: false,
+        error: 'Failed to clear cache',
+        message: error.message
+      });
+    }
+  }
+};
+
+module.exports = matchesController;

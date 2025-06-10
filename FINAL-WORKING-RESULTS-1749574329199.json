@@ -1,0 +1,142 @@
+{
+  "timestamp": "2025-06-10T16:52:07.515Z",
+  "version": "FINAL-WORKING-v1.0",
+  "targetMatch": {
+    "id": 7479469,
+    "homeId": 8607,
+    "awayId": 8597,
+    "homeName": "Iran",
+    "awayName": "North Korea",
+    "season": "2026",
+    "competitionId": 10117,
+    "date": 1749571200,
+    "status": "incomplete"
+  },
+  "workingSeasonId": 1625,
+  "formData": {
+    "iranLast5Home": [],
+    "nkLast5Away": []
+  },
+  "debug": {
+    "exampleTeamId": 149,
+    "exampleHomeMatches": [
+      {
+        "id": 453873,
+        "homeId": 149,
+        "awayId": 108,
+        "homeName": "Manchester United",
+        "awayName": "Leicester City",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1533927600,
+        "status": "complete"
+      },
+      {
+        "id": 453902,
+        "homeId": 149,
+        "awayId": 92,
+        "homeName": "Manchester United",
+        "awayName": "Tottenham Hotspur",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1535396400,
+        "status": "complete"
+      },
+      {
+        "id": 453929,
+        "homeId": 149,
+        "awayId": 223,
+        "homeName": "Manchester United",
+        "awayName": "Wolverhampton Wanderers",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1537624800,
+        "status": "complete"
+      },
+      {
+        "id": 453949,
+        "homeId": 149,
+        "awayId": 157,
+        "homeName": "Manchester United",
+        "awayName": "Newcastle United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1538843400,
+        "status": "complete"
+      },
+      {
+        "id": 453969,
+        "homeId": 149,
+        "awayId": 144,
+        "homeName": "Manchester United",
+        "awayName": "Everton",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1540742400,
+        "status": "complete"
+      }
+    ],
+    "exampleAwayMatches": [
+      {
+        "id": 453891,
+        "homeId": 209,
+        "awayId": 149,
+        "homeName": "Brighton & Hove Albion",
+        "awayName": "Manchester United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1534690800,
+        "status": "complete"
+      },
+      {
+        "id": 453905,
+        "homeId": 145,
+        "awayId": 149,
+        "homeName": "Burnley",
+        "awayName": "Manchester United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1535900400,
+        "status": "complete"
+      },
+      {
+        "id": 453919,
+        "homeId": 155,
+        "awayId": 149,
+        "homeName": "Watford",
+        "awayName": "Manchester United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1537029000,
+        "status": "complete"
+      },
+      {
+        "id": 453933,
+        "homeId": 153,
+        "awayId": 149,
+        "homeName": "West Ham United",
+        "awayName": "Manchester United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1538220600,
+        "status": "complete"
+      },
+      {
+        "id": 453956,
+        "homeId": 152,
+        "awayId": 149,
+        "homeName": "Chelsea",
+        "awayName": "Manchester United",
+        "season": "2018/2019",
+        "competitionId": 1625,
+        "date": 1540035000,
+        "status": "complete"
+      }
+    ]
+  },
+  "summary": {
+    "totalRequests": 4,
+    "successfulRequests": 4,
+    "failedRequests": 0
+  }
+}

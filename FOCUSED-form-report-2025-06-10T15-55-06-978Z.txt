@@ -1,0 +1,21 @@
+FOCUSED TEAM FORM DATA COLLECTION REPORT
+========================================
+
+Generated: 2025-06-10T15:53:41.303Z
+Target: LAST 5 HOME GAMES FOR IRAN + LAST 5 AWAY GAMES FOR NORTH KOREA
+
+TARGET MATCH:
+Iran (8607) vs North Korea (8597)
+Match ID: 7479469
+Season: 2026
+
+FORM DATA RESULTS:
+Iran Last 5 Home Games: 0
+
+North Korea Last 5 Away Games: 0
+
+DATA COLLECTION SUMMARY:
+Total Requests: 38
+Successful: 3
+Failed: 35
+Success Rate: 7.9%

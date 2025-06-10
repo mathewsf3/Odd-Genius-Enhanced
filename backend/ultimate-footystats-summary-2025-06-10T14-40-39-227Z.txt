@@ -1,0 +1,25 @@
+ULTIMATE FOOTYSTATS API TEST SUMMARY
+Generated: 2025-06-10T14:40:40.456Z
+API Key: 4fd202fbc338fbd450e91761c7b83641606b2a4da37dd1a7d29b4cd1d4de9756
+
+Total Endpoints: 16
+Successful Endpoints: 16
+Logo URLs Found: 0
+Statistics Fields Found: 195
+
+league-list: 3/3 tests passed
+country-list: 1/1 tests passed
+todays-matches: 4/4 tests passed
+league-season: 5/5 tests passed
+league-matches: 8/8 tests passed
+league-tables: 2/2 tests passed
+team: 10/10 tests passed
+lastx: 3/3 tests passed
+match: 3/3 tests passed
+league-players: 8/8 tests passed
+player-stats: 5/5 tests passed
+league-referees: 2/2 tests passed
+referee: 5/5 tests passed
+stats-data-btts: 1/1 tests passed
+stats-data-over25: 1/1 tests passed
+test-call: 1/1 tests passed

@@ -1,0 +1,25 @@
+FINAL TEAM FORM EXTRACTION SUMMARY
+Generated: 2025-06-10T16:07:57.975Z
+
+OBJECTIVE:
+- Iran (8607): Find last 5 HOME games
+- North Korea (8597): Find last 5 AWAY games
+
+RESULTS:
+- Iran Home Games Found: 0/5
+- North Korea Away Games Found: 0/5
+- API Success Rate: 16.7%
+
+STRATEGIES ATTEMPTED:
+- Direct Iran matches - FAILED
+- Direct North Korea matches - FAILED
+- Target match details - FAILED
+- Iran team details - FAILED
+- North Korea team details - FAILED
+- Today matches analysis - SUCCESS
+
+CONCLUSION:
+LIMITATION: No historical form data available in FootyStats for these teams
+
+RECOMMENDATION:
+FootyStats API may not have historical match data for these international teams. Consider using current match data and statistical averages for predictions.

@@ -1,0 +1,20 @@
+COMPREHENSIVE MATCH DATA COLLECTION REPORT
+==========================================
+
+Generated: 2025-06-10T15:45:34.157Z
+Target: COMPLETE DATA FOR ONE UPCOMING MATCH
+
+SELECTED MATCH:
+Eintracht (Steksy) vs Tottenham (Glumac)
+Date: undefined
+League: Unknown
+
+DATA COLLECTION RESULTS:
+Total Requests: 9
+Successful: 9
+Failed: 0
+Success Rate: 100.0%
+
+HOME TEAM LAST 5 HOME GAMES:
+
+AWAY TEAM LAST 5 AWAY GAMES:

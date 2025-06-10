@@ -1,0 +1,90 @@
+BACKEND FILES - Live vs Upcoming Match Processing
+==============================================
+
+1. backend/src/services/allSportsApiService.js
+   - Lines 352-534: fetchLiveMatches() function
+   - Lines 539-688: fetchUpcomingMatches() function  
+   - Lines 1407-1427: getLiveMatches() service method
+   - Lines 1448-1472: getUpcomingMatches() service method
+   - Lines 1592-1650: getMatchStats() (tries live first, then upcoming)
+
+2. backend/src/controllers/matchesController.js
+   - Lines 8-40: getLiveMatches() controller
+   - Lines 43-70: getUpcomingMatches() controller
+   - Lines 177-202: getMatchDetails() (tries live first, then upcoming)
+   - Lines 488-495: getMatchBTTSStats() (tries live first, then upcoming)
+   - Lines 591: getMatchPlayerStats() uses getMatchStats()
+
+3. backend/src/routes/api.js
+   - Line 10: router.get('/matches/live', matchesController.getLiveMatches)
+   - Line 13: router.get('/matches/upcoming', matchesController.getUpcomingMatches)
+   - Line 19: router.get('/matches/:id', matchesController.getMatchDetails)
+
+4. backend/src/services/analysis/liveUpdates.js
+   - Lines 105-122: startUpdates() for live match data
+   - Lines 112-114: getLiveMatchData() method
+
+FRONTEND FILES - Live vs Upcoming Match Processing
+==============================================
+
+5. frontend/src/api/services/soccerApiService.ts
+   - Lines 68-76: getLiveMatches() method
+   - Lines 78-86: getUpcomingMatches() method
+
+6. frontend/src/pages/LiveMatches.tsx
+   - Lines 47-65: fetchMatches() with conditional logic
+   - Lines 72-75: Different refresh intervals (30s live, 60s upcoming)
+   - Lines 81-90: groupedMatches processing
+
+7. frontend/src/pages/Dashboard.tsx
+   - Lines 65-76: fetchLiveMatches() function
+   - Lines 77-88: fetchUpcomingMatches() function
+   - Lines 129-133: Initial data load
+
+8. frontend/src/api/soccerApiService.ts (duplicate service file)
+   - Lines 192-220: getLiveMatches() with direct AllSportsAPI call
+   - Lines 221-240: getUpcomingMatches() with backend call
+
+CORNER STATS SPECIFIC FILES
+===========================
+
+9. frontend/src/services/cornerStatsService.ts
+   - Entire file: Uses backend endpoint for corner stats
+   - Should work same for live and upcoming matches
+
+10. backend/src/routes/analysis.js
+    - Corner stats route: /matches/:id/corners
+
+PLAYER STATS SPECIFIC FILES
+===========================
+
+11. backend/src/services/allSportsApiService.js
+    - Lines 2067-2200: getPlayerStatsForMatch() function
+    - Cache key includes match ID (should preserve data)
+
+CARD STATS SPECIFIC FILES (WORKING REFERENCE)
+=============================================
+
+12. backend/src/services/cardStatsService.js
+    - Entire file: Working implementation for reference
+    - Uses same pattern that should work for live matches
+
+KEY DIFFERENCES TO INVESTIGATE
+==============================
+
+LIVE MATCH DATA SOURCE:
+- API Endpoint: met: 'Livescore' + met: 'Fixtures' with live: true
+- Fields: Different field names for team IDs
+- Status: 'LIVE' with elapsed time
+- Data: Limited live data, may miss historical statistics
+
+UPCOMING MATCH DATA SOURCE:  
+- API Endpoint: met: 'Fixtures' with date range
+- Fields: Standard field names (event_home_team_id, event_away_team_id)
+- Status: 'NS' (Not Started)
+- Data: Full match data with all available fields
+
+SUSPECTED ROOT CAUSE:
+- Team ID field names differ between live and upcoming data
+- Live matches may use different field names that break team identification
+- Statistics APIs may not work with live match team ID format

@@ -1,0 +1,24 @@
+FOOTYSTATS API COMPREHENSIVE TEST SUMMARY
+Generated: 2025-06-10T15:06:04.222Z
+API Key: 4fd202fbc338fbd450e91761c7b83641606b2a4da37dd1a7d29b4cd1d4de9756
+Base URL: https://api.football-data-api.com
+
+OVERALL RESULTS:
+Total Requests: 47
+Successful: 44
+Failed: 3
+Success Rate: 93.62%
+
+DATA COMPLETENESS:
+teamLogos: AVAILABLE
+leagueLogos: AVAILABLE
+formData: AVAILABLE
+cornersData: MISSING
+cardsData: MISSING
+goalsData: AVAILABLE
+bttsData: AVAILABLE
+refereeData: AVAILABLE
+playerData: AVAILABLE
+liveMatchData: AVAILABLE
+upcomingMatchData: MISSING
+predictionData: MISSING

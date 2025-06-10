@@ -1,0 +1,120 @@
+{
+  "matchDetails": {
+    "event_key": 1512298,
+    "event_date": "2025-06-03",
+    "event_time": "20:30",
+    "event_home_team": "Austria W",
+    "home_team_key": 9203,
+    "event_away_team": "Germany W",
+    "away_team_key": 586,
+    "event_halftime_result": "0 - 1",
+    "event_final_result": "0 - 1",
+    "event_ft_result": "",
+    "event_penalty_result": "",
+    "event_status": "7",
+    "country_name": "intl",
+    "league_name": "UEFA Women's Nations League - League A",
+    "league_key": 10231,
+    "league_round": "Round 6",
+    "league_season": "2025/2026",
+    "event_live": "1",
+    "event_stadium": "Generali Arena (Wien)",
+    "event_referee": "",
+    "home_team_logo": "https://apiv2.allsportsapi.com/logo/9203_austria-women.jpg",
+    "away_team_logo": "https://apiv2.allsportsapi.com/logo/586_germany-women.jpg",
+    "event_country_key": 2,
+    "league_logo": null,
+    "country_logo": "https://apiv2.allsportsapi.com/logo/logo_country/2_intl.png",
+    "event_home_formation": "",
+    "event_away_formation": "",
+    "fk_stage_key": 9771,
+    "stage_name": "League A",
+    "league_group": null,
+    "goalscorers": [
+      {
+        "time": "1",
+        "home_scorer": "",
+        "home_scorer_id": "",
+        "home_assist": "",
+        "home_assist_id": "",
+        "score": "0 - 1",
+        "away_scorer": "S. Lohmann",
+        "away_scorer_id": "378512211",
+        "away_assist": "S. Cerci",
+        "away_assist_id": "4194734264",
+        "info": "",
+        "info_time": "1st Half"
+      }
+    ],
+    "substitutes": [],
+    "cards": [],
+    "vars": {
+      "home_team": [],
+      "away_team": []
+    },
+    "lineups": {
+      "home_team": {
+        "starting_lineups": [],
+        "substitutes": [],
+        "coaches": [
+          {
+            "coache": "A. Schriebl",
+            "coache_country": null
+          }
+        ],
+        "missing_players": []
+      },
+      "away_team": {
+        "starting_lineups": [],
+        "substitutes": [],
+        "coaches": [
+          {
+            "coache": "C. Wück",
+            "coache_country": null
+          }
+        ],
+        "missing_players": []
+      }
+    },
+    "statistics": [
+      {
+        "type": "Attacks",
+        "home": "6",
+        "away": "1"
+      },
+      {
+        "type": "Dangerous Attacks",
+        "home": "4",
+        "away": "1"
+      },
+      {
+        "type": "On Target",
+        "home": "0",
+        "away": "1"
+      },
+      {
+        "type": "Off Target",
+        "home": "2",
+        "away": "0"
+      }
+    ]
+  },
+  "teamIds": {
+    "home": 9203,
+    "away": 586
+  },
+  "dataAvailability": {
+    "goals": true,
+    "cards": false,
+    "corners": false,
+    "players": false,
+    "statistics": true
+  },
+  "apiFootballData": null,
+  "recommendations": [
+    "Use historical team data for statistical estimation",
+    "Apply league-specific estimation for UEFA Women's Nations League - League A",
+    "Implement \"Limited Data\" UI mode for affected matches",
+    "Show available data prominently, estimate missing data with disclaimers"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "targetMatch": {
+    "id": 7479469,
+    "homeTeamId": 8607,
+    "homeTeamName": "Iran",
+    "awayTeamId": 8597,
+    "awayTeamName": "North Korea",
+    "season": "2026",
+    "roundId": 113916,
+    "leagueId": null
+  },
+  "formData": {
+    "iranLast5Home": [],
+    "northKoreaLast5Away": []
+  },
+  "analysis": {
+    "dataCollection": {
+      "totalEndpoints": 38,
+      "successfulEndpoints": 3,
+      "failedEndpoints": 35,
+      "totalDataBytes": 2567607
+    },
+    "teamForm": {
+      "iranHomeGames": 0,
+      "northKoreaAwayGames": 0,
+      "targetAchieved": false
+    },
+    "matchData": {
+      "iranTotalMatches": 0,
+      "northKoreaTotalMatches": 0,
+      "uniqueLeagues": {},
+      "dateRange": {
+        "earliest": null,
+        "latest": null
+      }
+    }
+  },
+  "summary": {
+    "totalRequests": 38,
+    "successfulRequests": 3,
+    "failedRequests": 35
+  }
+}

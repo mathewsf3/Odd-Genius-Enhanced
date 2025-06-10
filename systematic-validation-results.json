@@ -1,0 +1,34 @@
+{
+  "apiFootball": {
+    "leagueCoverage": true,
+    "fixtureId": null,
+    "statistics": null,
+    "events": null,
+    "lineups": null,
+    "odds": null,
+    "predictions": null
+  },
+  "allSports": {
+    "matchDirect": {
+      "success": 1,
+      "count": 1
+    },
+    "teamFallback": {
+      "totalMatches": 15,
+      "targetFound": true
+    },
+    "statistics": {
+      "success": 0,
+      "count": 0
+    },
+    "lineups": {
+      "success": 0,
+      "count": 0
+    },
+    "odds": {
+      "success": 1,
+      "count": 0
+    }
+  },
+  "summary": {}
+}

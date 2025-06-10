@@ -1,0 +1,90 @@
+[
+  {
+    "time": {
+      "elapsed": 43,
+      "extra": null
+    },
+    "team": {
+      "id": 10842,
+      "name": "USM Alger U21",
+      "logo": "https://media.api-sports.io/football/teams/10842.png"
+    },
+    "player": {
+      "id": null,
+      "name": "Bayoud"
+    },
+    "assist": {
+      "id": null,
+      "name": null
+    },
+    "type": "Goal",
+    "detail": "Normal Goal",
+    "comments": null
+  },
+  {
+    "time": {
+      "elapsed": 66,
+      "extra": null
+    },
+    "team": {
+      "id": 10842,
+      "name": "USM Alger U21",
+      "logo": "https://media.api-sports.io/football/teams/10842.png"
+    },
+    "player": {
+      "id": 453423,
+      "name": "M. Bouatoui"
+    },
+    "assist": {
+      "id": null,
+      "name": null
+    },
+    "type": "Goal",
+    "detail": "Normal Goal",
+    "comments": null
+  },
+  {
+    "time": {
+      "elapsed": 79,
+      "extra": null
+    },
+    "team": {
+      "id": 10837,
+      "name": "MC Oran U21",
+      "logo": "https://media.api-sports.io/football/teams/10837.png"
+    },
+    "player": {
+      "id": 453423,
+      "name": "A. Aid"
+    },
+    "assist": {
+      "id": null,
+      "name": null
+    },
+    "type": "Goal",
+    "detail": "Normal Goal",
+    "comments": null
+  },
+  {
+    "time": {
+      "elapsed": 90,
+      "extra": 6
+    },
+    "team": {
+      "id": 10842,
+      "name": "USM Alger U21",
+      "logo": "https://media.api-sports.io/football/teams/10842.png"
+    },
+    "player": {
+      "id": 453423,
+      "name": "U. Mokhtari"
+    },
+    "assist": {
+      "id": null,
+      "name": null
+    },
+    "type": "Goal",
+    "detail": "Normal Goal",
+    "comments": null
+  }
+]
