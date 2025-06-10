@@ -295,6 +295,35 @@ const getTeamLastXStats = async (teamId) => {
 };
 
 /**
+ * Get recent matches for a team filtered by venue
+ * @param {number|string} teamId
+ * @param {'home'|'away'} venue
+ * @param {number} limit
+ * @param {number|null} seasonId
+ */
+const getTeamVenueMatches = async (teamId, venue, limit = 5, seasonId = null) => {
+  try {
+    const params = {
+      team_id: teamId,
+      venue,
+      max_per_page: limit,
+      order: 'date_desc'
+    };
+    if (seasonId) params.season_id = seasonId;
+
+    const cacheKey = `${CACHE_KEYS.TEAM_STATS}-${teamId}-${venue}-${limit}-${seasonId}`;
+    const data = await cachedApiRequest('/league-matches', params, cacheKey, CACHE_TTL.TEAM_STATS);
+    return Array.isArray(data?.data) ? data.data.slice(0, limit) : [];
+  } catch (error) {
+    logger.error(`Error fetching FootyStats venue matches for ${teamId}:`, {
+      service: 'footystats-api',
+      error: error.message
+    });
+    return [];
+  }
+};
+
+/**
  * Get league players for player analysis
  */
 const getLeaguePlayers = async (seasonId, page = 1) => {
@@ -886,6 +915,7 @@ module.exports = {
   // Team analysis  
   getTeamStats,
   getTeamLastXStats,
+  getTeamVenueMatches,
   getTeamCornerStats,
   getTeamCardStats,
   getTeamBTTSStats,
