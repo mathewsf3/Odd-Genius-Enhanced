@@ -79,6 +79,9 @@ router.get('/matches/:id/odds', matchesController.getMatchOdds);
 // Comprehensive match analysis
 router.get('/matches/:id/analysis', matchesController.getMatchAnalysis);
 
+// New comprehensive analysis with historical data
+router.get('/matches/:id/comprehensive-analysis', matchesController.getComprehensiveAnalysis);
+
 // Complete match details with all analytics
 router.get('/matches/:id/complete', matchesController.getCompleteMatchDetails);
 

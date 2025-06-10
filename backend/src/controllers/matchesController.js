@@ -761,6 +761,27 @@ const matchesController = {
   },
 
   /**
+   * Get comprehensive analysis including historical stats
+   */
+  getComprehensiveAnalysis: async (req, res) => {
+    try {
+      const { id: matchId } = req.params;
+      logger.info(`Getting comprehensive analysis for match ${matchId}`, { service: 'matches' });
+
+      const data = await require('../services/comprehensiveMatchAnalysisService').getComprehensiveMatchAnalysis(matchId);
+
+      if (!data) {
+        return res.status(404).json({ success: false, error: 'Match not found' });
+      }
+
+      res.json({ success: true, result: data, source: 'FootyStats', timestamp: new Date().toISOString() });
+    } catch (error) {
+      logger.error(`Error getting comprehensive analysis for ${req.params.id}:`, error);
+      res.status(500).json({ success: false, error: 'Failed to get comprehensive analysis', message: error.message });
+    }
+  },
+
+  /**
    * Get complete match details
    */
   getCompleteMatchDetails: async (req, res) => {
